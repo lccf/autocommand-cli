@@ -1,0 +1,21 @@
+{
+  "name": "autocommand-cli",
+  "version": "0.1.0",
+  "description": "autocommand command-line interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "auto command",
+    "auto compile",
+    "frontend preprocessor compile"
+  ],
+  "author": "lcc",
+  "license": "MIT",
+  "dependencies": {
+    "browser-sync": "^2.11.1",
+    "commander": "^2.9.0",
+    "node-notifier": "^4.5.0"
+  }
+}
