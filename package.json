@@ -17,5 +17,8 @@
     "browser-sync": "^2.11.1",
     "commander": "^2.9.0",
     "node-notifier": "^4.5.0"
+  },
+  "bin": {
+    "acmd": "./bin/acmd"
   }
 }
