@@ -20,5 +20,8 @@
   },
   "bin": {
     "acmd": "./bin/acmd"
+  },
+  "devDependencies": {
+    "livescript": "^1.4.0"
   }
 }

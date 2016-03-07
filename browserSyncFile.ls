@@ -38,12 +38,13 @@ getCompileCmdAndFileName = (file, ext) ->
     relativePath = relativePath.split path.sep .join \/
     file = file.split path.sep .join \/
 
+  # console.log filename
   switch ext
   case '.ts' then
     switch relativePath
     case '_source/lib'
       compileFileName = "#baseDir/lib/#{filename}.js"
-      cmd = "tsc --out #compileFileName #file"
+      cmd = "tsc -m commonjs --outDir #baseDir/lib #file"
     default
       compileFileName = "#{filename}.js"
       cmd = "tsc #file"
@@ -101,11 +102,11 @@ compileCallback = (file) !->
     console.log 'unknown file type.'
 # }}}
 # browserSync {{{
-# browserSync.init do
-#   server:
-#     baseDir: baseDir
-#     index: \index.html
-#   open: false
+browserSync.init do
+  server:
+    baseDir: baseDir
+    index: \index.html
+  open: false
 
 if reloadWatchFile and reloadWatchFile.length
   browserSync.watch reloadWatchFile
