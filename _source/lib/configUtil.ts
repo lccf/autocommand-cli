@@ -2,7 +2,7 @@
 import fs = require('fs');
 
 class configUtil {
-    read(config:string) {
+    read(config:string): JSON {
         let result: JSON = null;
         if (!config.length) {
             config = '_config';
