@@ -27,12 +27,19 @@ class Watch {
         bs.watch(watchFile).on('change', this.compileCallbac);
       }
     }
-    checkIgnore(filename: string): boolean {
-      let allow: boolean = false;
-      return allow;
-    }
-    checkExtention(ext: string): boolean {
+    /* 检测忽略 */
+    checkIgnore(file: string): boolean {
+      let filename: string = path.basename(file);
       let allow: boolean = true;
+      let ignore = this.config.ignore;
+      for(let i=0, j=ignore.length; i<j; i++) {
+        let match = new RegExp(ignore[i]);
+        if (match.exec(filename)) {
+          allow = false;
+          break;
+        }
+      }
+
       return allow;
     }
     compileTask(file: string, ext: string, reload: any): void {
