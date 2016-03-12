@@ -42,13 +42,27 @@ class Watch {
 
       return allow;
     }
-    compileTask(file: string, ext: string, reload: any): void {
+    getCompileCmdAndFileName(file: string, ext: string): Array<string> {
+      let result: Array<string> = [];
+      let config = this.config;
+      let fileName: string = path.basename(file, ext);
+      let filePath: string = path.dirname(file);
+      let relativePath: string = path.resolve(config.baseDir, filePath);
 
+      if (path.sep != '/') {
+        relativePath = relativePath.replace('\\', '/');
+        file = file.replace('\\', '/');
+      }
+
+      return result;
+    }
+    compileTask(file: string, ext: string, reload: any): void {
+      let cmdAndFileName: Array<string> = this.getCompileCmdAndFileName(file, ext)
     }
     compileCallbac(file: string): void {
       let ext: string = path.extname(file);
 
-      if (this.checkIgnore(file) != true || this.checkExtention(ext) != true) {
+      if (this.checkIgnore(file) != true) {
         return;
       }
       this.compileTask(file, ext, bs.reload);
