@@ -24,7 +24,7 @@ class Watch {
           file = file.replace(/\\/g, '/');
           watchFile.push(config.baseDir+'/'+ file);
         }
-        bs.watch(watchFile).on('change', this.compileCallbac);
+        bs.watch(watchFile).on('change', this.compileCallback);
       }
     }
     /* 检测忽略 */
@@ -43,23 +43,40 @@ class Watch {
       return allow;
     }
     getCompileCmdAndFileName(file: string, ext: string): Array<string> {
-      let result: Array<string> = [];
       let config = this.config;
+      let result: Array<any> = [];
       let fileName: string = path.basename(file, ext);
       let filePath: string = path.dirname(file);
       let relativePath: string = path.resolve(config.baseDir, filePath);
+
+      result.push(fileName);
 
       if (path.sep != '/') {
         relativePath = relativePath.replace('\\', '/');
         file = file.replace('\\', '/');
       }
+      let cmdDefine: any = this.config.define;
+      let pathNode: any = false;
+      let cmdArray: Array<string> = [];
 
+      if (cmdDefine[relativePath]) {
+        pathNode = cmdDefine[relativePath];
+      }
+
+      let cmdNode: any = pathNode["."+ext];
+      if (cmdNode) {
+        cmdArray = [].concat(cmdNode.command);
+        result.push(cmdArray);
+      }
+      else {
+        result = [];
+      }
       return result;
     }
     compileTask(file: string, ext: string, reload: any): void {
       let cmdAndFileName: Array<string> = this.getCompileCmdAndFileName(file, ext)
     }
-    compileCallbac(file: string): void {
+    compileCallback(file: string): void {
       let ext: string = path.extname(file);
 
       if (this.checkIgnore(file) != true) {
