@@ -1,6 +1,7 @@
 /// <reference path="../../typings/main.d.ts" />
 /// <reference path="../declare/main.d.ts" />
 import path = require('path');
+let configUtil:any = require('./configUtil.js');
 
 class fileManage {
   private static _instance = {}
@@ -55,7 +56,37 @@ class fileManage {
     this._filePath = filePath;
   }
   public parseFileCommand(): void {
+    let config = configUtil.getConfig();
+    let result: Array<any> = [];
+    let file: string = this.file;
+    let fileName: string = this.fileName;
+    let filePath: string = this.filePath;
+    let ext: string = this.fileExt;
+    let relativePath: string = path.resolve(config.baseDir, filePath);
 
+    result.push(fileName);
+
+    if (path.sep != '/') {
+      relativePath = relativePath.replace('\\', '/');
+      file = file.replace('\\', '/');
+    }
+    let cmdDefine: any = config.define;
+    let pathNode: any = false;
+    let cmdArray: Array<string> = [];
+
+    if (cmdDefine[relativePath]) {
+      pathNode = cmdDefine[relativePath];
+    }
+
+    let cmdNode: any = pathNode["."+ext];
+    if (cmdNode) {
+      cmdArray = [].concat(cmdNode.command);
+      result.push(cmdArray);
+    }
+    else {
+      result = [];
+    }
+    this._command = result;
   }
   /* 构造函数 */
   constructor(file: string) {
