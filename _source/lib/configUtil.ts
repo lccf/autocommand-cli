@@ -2,26 +2,37 @@
 import fs = require('fs');
 
 class configUtil {
-    read(config:string): JSON {
-        let result: JSON = null;
-        if (!config.length) {
-            config = '_config';
-        }
-        if (fs.existsSync(config)) {
-            let configContent:any = fs.readFileSync(config);
-            try {
-                result = JSON.parse(configContent);
-                return result;
-            }
-            catch(e) {
-                console.log('parse config error');
-            }
-            finally {}
-        }
-        else {
-            console.log('config file not found');
-        }
+  private static _instance: Array<any> = [];
+  public static getConfig(configFile: string): JSON {
+    let config: any = null;
+    if (!configUtil._instance[configFile]) {
+      config = configUtil.read(configFile);
     }
+    else {
+      config = configUtil._instance[configFile];
+    }
+    return config;
+  }
+  public static read (configFile: string): any {
+    let result: any = null;
+    if (!configFile.length) {
+      configFile = '_config';
+    }
+    if (fs.existsSync(configFile)) {
+      let configContent: any = fs.readFileSync(configFile);
+      try {
+        result = JSON.parse(configContent);
+        return result;
+      }
+      catch(e) {
+        console.log('parse config error');
+      }
+      finally {}
+    }
+    else {
+      console.log('config file not found');
+    }
+  }
 }
 
-module.exports = new configUtil();
+module.exports = configUtil;
