@@ -9,10 +9,14 @@ let exec = child_process.exec;
 
 class Watch {
     config: configStructure;
-    constructor() {
-      this.config = configUtil.read();
-    }
-    run(): void {
+    run(dir: string = '.', options: any): void {
+      let configFile = '_config';
+      if (options.config && options.config != true) {
+        configFile = options.config;
+      }
+      if (!this.config) {
+        this.config = configUtil.getConfig(configFile);
+      }
       let config = this.config;
       let watchFile: Array<string> = [];
       if (config.watchFile || config.watchFile.length) {
