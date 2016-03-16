@@ -5,9 +5,11 @@ let watchAction:any = require('./watch.js');
 
 module.exports = function (args:string[]):void {
     program.version(pkg.version);
-    
-    program.command('watch', '', {isDefault: true})
+
+    program.command('watch [dir]', '')
+    .description('watch file change')
+    .option('-c, --config [config]', 'config file')
     .action(watchAction.run);
-    
+
     program.parse(args);
 }
