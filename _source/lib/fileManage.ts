@@ -5,7 +5,7 @@ let configUtil:any = require('./configUtil.js');
 
 class fileManage {
   private static _instance = {}
-  public static getInstance(file: string): fileManage {
+  public static getFile(file: string): fileManage {
     let fileCache: any = fileManage._instance;
     let fileObject: any = null;
     if (fileCache[file]) {
