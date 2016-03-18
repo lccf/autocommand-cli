@@ -11,20 +11,15 @@ let exec = child_process.exec;
 
 class Watch {
     config: configStructure;
-    watchPath: string;
+    workPath: string;
     browserSync: any;
-    run(dir: string = './', options: any): void {
+    run(options: any): void {
       let configFile = '_config';
       if (options.config && options.config != true) {
         configFile = options.config;
       }
-      if (dir.charAt(0) != '/') {
-        this.watchPath = path.normalize(process.cwd() + '/' + dir);
-      }
-      else {
-        this.watchPath = dir;
-      }
-      configFile = path.normalize(this.watchPath + '/' + configFile);
+      this.workPath = process.cwd();
+      configFile = path.normalize(this.workPath + '/' + configFile);
       console.log(configFile);
       if (!this.config) {
         this.config = configUtil.getConfig(configFile);
@@ -38,7 +33,7 @@ class Watch {
         for(let i=0, j=config.watchFile.length; i<j; i++) {
           let file: string = config.watchFile[i];
           file = file.replace(/\\/g, '/');
-          watchFile.push(this.watchPath + file);
+          watchFile.push(path.normalize(this.workPath + '/' + file);
         }
         if (config.browserSync) {
           this.browserSync.init(browserSync);
@@ -46,6 +41,7 @@ class Watch {
         else {
           this.browserSync.init();
         }
+        console.log(watchFile);
         this.browserSync.watch(watchFile).on('change', this.compileCallback);
       }
     }
