@@ -1,38 +1,52 @@
 /// <reference path="../../typings/main.d.ts"/>
 /// <reference path="../declare/main.d.ts"/>
+
 let configUtil: any = require('./configUtil.js');
 let fileManage: any = require('./fileManage.js');
 import path = require('path');
 import child_process = require('child_process');
-import bs = require('browser-sync');
+import browserSync = require('browser-sync');
 
 let exec = child_process.exec;
 
 class Watch {
     config: configStructure;
+    watchPath: string;
+    browserSync: any;
     run(dir: string = './', options: any): void {
-      let cliPath: string = process.cwd();
       let configFile = '_config';
       if (options.config && options.config != true) {
         configFile = options.config;
       }
-      configFile = path.normalize(cliPath + '/' + dir + configFile);
+      if (dir.charAt(0) != '/') {
+        this.watchPath = path.normalize(process.cwd() + '/' + dir);
+      }
+      else {
+        this.watchPath = dir;
+      }
+      configFile = path.normalize(this.watchPath + '/' + configFile);
       console.log(configFile);
       if (!this.config) {
         this.config = configUtil.getConfig(configFile);
       }
+      if (!this.browserSync) {
+        this.browserSync = browserSync.create();
+      }
       let config = this.config;
       let watchFile: Array<string> = [];
       if (config.watchFile || config.watchFile.length) {
-        config.baseDir = (config.baseDir || '.')
-          .replace(/\\/g, '/').replace(/\/$/, '');
-
         for(let i=0, j=config.watchFile.length; i<j; i++) {
           let file: string = config.watchFile[i];
           file = file.replace(/\\/g, '/');
-          watchFile.push(config.baseDir+'/'+ file);
+          watchFile.push(this.watchPath + file);
         }
-        bs.watch(watchFile).on('change', this.compileCallback);
+        if (config.browserSync) {
+          this.browserSync.init(browserSync);
+        }
+        else {
+          this.browserSync.init();
+        }
+        this.browserSync.watch(watchFile).on('change', this.compileCallback);
       }
     }
     /* 检测忽略 */
@@ -59,7 +73,7 @@ class Watch {
       if (this.checkIgnore(file) != true) {
         return;
       }
-      this.compileTask(file, bs.reload);
+      this.compileTask(file, this.browserSync.reload);
     }
 }
 
