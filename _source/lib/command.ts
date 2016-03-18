@@ -9,7 +9,7 @@ module.exports = function (args:string[]):void {
     program.command('watch [dir]', '')
     .description('watch file change')
     .option('-c, --config [config]', 'config file')
-    .action(watchAction.run);
+    .action(watchAction.run.bind(watchAction));
 
     program.parse(args);
 }
