@@ -5,17 +5,18 @@ let configUtil:any = require('./configUtil.js');
 
 class fileManage {
   private static _instance = {}
-  public static getFile(file: string): fileManage {
+  public static getFile(file: string, config: configStructure): fileManage {
     let fileCache: any = fileManage._instance;
     let fileObject: any = null;
     if (fileCache[file]) {
       fileObject = fileCache[file];
     } else {
-      fileObject = new fileManage(file);
+      fileObject = new fileManage(file, config);
       this._instance[file] = fileObject;
     }
     return fileObject;
   }
+  config: configStructure;
   private file: string;
   /* 获取文件名 */
   private _fileName: string;
@@ -56,15 +57,16 @@ class fileManage {
     this._filePath = filePath;
   }
   public parseFileCommand(): void {
-    let config = configUtil.getConfig();
+    let config = this.config;
     let result: Array<any> = [];
     let file: string = this.file;
     let fileName: string = this.fileName;
     let filePath: string = this.filePath;
     let ext: string = this.fileExt;
-    let relativePath: string = path.resolve(config.baseDir, filePath);
+    let relativePath: string = path.relative(process.cwd(), filePath);
+    console.log(this.file);
 
-    result.push(fileName);
+    result.push(file);
 
     if (path.sep != '/') {
       relativePath = relativePath.replace('\\', '/');
@@ -73,12 +75,14 @@ class fileManage {
     let cmdDefine: any = config.define;
     let pathNode: any = false;
     let cmdArray: Array<string> = [];
-
     if (cmdDefine[relativePath]) {
       pathNode = cmdDefine[relativePath];
     }
+    else {
+      pathNode = cmdDefine;
+    }
 
-    let cmdNode: any = pathNode["."+ext];
+    let cmdNode: any = pathNode[ext];
     if (cmdNode) {
       cmdArray = [].concat(cmdNode.command);
       result.push(cmdArray);
@@ -89,7 +93,8 @@ class fileManage {
     this._command = result;
   }
   /* 构造函数 */
-  constructor(file: string) {
+  constructor(file: string, config: configStructure) {
+    this.config = config;
     this.file = file;
     this.parseFileExt();
     this.parseFileName();
@@ -97,3 +102,5 @@ class fileManage {
     this.parseFileCommand();
   }
 }
+
+module.exports = fileManage;
