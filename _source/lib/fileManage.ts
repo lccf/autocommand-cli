@@ -64,7 +64,6 @@ class fileManage {
     let filePath: string = this.filePath;
     let ext: string = this.fileExt;
     let relativePath: string = path.relative(process.cwd(), filePath);
-    console.log(this.file);
 
     result.push(file);
 
@@ -75,6 +74,7 @@ class fileManage {
     let cmdDefine: any = config.define;
     let pathNode: any = false;
     let cmdArray: Array<string> = [];
+    let variable: any = config.variable;
     if (cmdDefine[relativePath]) {
       pathNode = cmdDefine[relativePath];
     }
@@ -85,8 +85,9 @@ class fileManage {
     let cmdNode: any = pathNode[ext];
     if (cmdNode) {
       cmdArray = [].concat(cmdNode.command);
-      cmdArray.forEach(function(item, index) {
-        item.replace(/\#\{\$([^}]+)\}/g, function (a, b) {
+      for(var i=0, j = cmdArray.length; i<j; i++) {
+        let item: string = cmdArray[i];
+        item = item.replace(/\#\{\$([^}]+)\}/g, function (a, b) {
           if (b == 'file') {
             return file;
           }
@@ -96,12 +97,16 @@ class fileManage {
           else if (b == 'relativePath') {
             return relativePath;
           }
+          else if (variable && variable[b]) {
+            return variable[b];
+          }
           else {
             return a;
           }
         });
-        return item;
-      });
+        console.log(item);
+        cmdArray[i] = item;
+      }
       result.push(cmdArray);
     }
     else {
