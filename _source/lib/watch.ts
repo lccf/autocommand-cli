@@ -20,7 +20,6 @@ class Watch {
       }
       this.workPath = process.cwd();
       configFile = path.normalize(this.workPath + '/' + configFile);
-      console.log(configFile);
       if (!this.config) {
         this.config = configUtil.getConfig(configFile);
       }
@@ -35,14 +34,15 @@ class Watch {
           file = file.replace(/\\/g, '/');
           watchFile.push(path.normalize(this.workPath + '/' + file);
         }
-        if (config.browserSync) {
+        /* if (config.browserSync) {
           this.browserSync.init(browserSync);
         }
         else {
           this.browserSync.init();
         }
         console.log(watchFile);
-        this.browserSync.watch(watchFile).on('change', this.compileCallback);
+        this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this)); */
+        this.compileCallback('/Users/leaf/Documents/project/autocommand-cli/testDir/test.sass');
       }
     }
     /* 检测忽略 */
@@ -61,7 +61,7 @@ class Watch {
       return allow;
     }
     compileTask(file: string, reload: any): void {
-      let fileObject = fileManage.getFile(file);
+      let fileObject = fileManage.getFile(file, this.config);
       let command: Array<string> = fileObject.command;
       console.log(command);
     }
