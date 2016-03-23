@@ -63,7 +63,20 @@ class Watch {
     compileTask(file: string, reload: any): void {
       let fileObject = fileManage.getFile(file, this.config);
       let command: Array<string> = fileObject.command;
+      let fileName: string = fileObject.fileName;
       console.log(command);
+      let execCallback: any = function (err, stdo, stde) {
+        if (err is null && !stde) {
+          console.log("compiled "+fileName);
+        } else {
+          console.log(err || stde);
+        }
+      }
+      if (Array.isArray(command)) {
+        command.forEach(function (item, index) {
+          exec(item, execCallback);
+        });
+      }
     }
     compileCallback(file: string): void {
       if (this.checkIgnore(file) != true) {

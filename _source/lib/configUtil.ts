@@ -21,7 +21,6 @@ class configUtil {
     if (fs.existsSync(configFile)) {
       let configContent: string = fs.readFileSync(configFile, 'utf-8');
       configContent = configContent.replace(/\s*\/\/.*/g, '').replace(/\s*\/\*.*\*\//g, '');
-      console.log(configContent);
       try {
         result = JSON.parse(configContent);
         return result;
