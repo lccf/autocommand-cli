@@ -32,7 +32,7 @@ class Watch {
         for(let i=0, j=config.watchFile.length; i<j; i++) {
           let file: string = config.watchFile[i];
           file = file.replace(/\\/g, '/');
-          watchFile.push(path.normalize(this.workPath + '/' + file);
+          watchFile.push(path.normalize(this.workPath + '/' + file));
         }
         /* if (config.browserSync) {
           this.browserSync.init(browserSync);
@@ -66,7 +66,7 @@ class Watch {
       let fileName: string = fileObject.fileName;
       console.log(command);
       let execCallback: any = function (err, stdo, stde) {
-        if (err is null && !stde) {
+        if (err == null && !stde) {
           console.log("compiled "+fileName);
         } else {
           console.log(err || stde);
