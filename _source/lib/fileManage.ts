@@ -65,7 +65,7 @@ class fileManage {
     let ext: string = this.fileExt;
     let relativePath: string = path.relative(process.cwd(), filePath);
 
-    result.push(file);
+    // result.push(file)
 
     if (path.sep != '/') {
       relativePath = relativePath.replace('\\', '/');
@@ -104,13 +104,9 @@ class fileManage {
             return a;
           }
         });
-        console.log(item);
         cmdArray[i] = item;
       }
-      result.push(cmdArray);
-    }
-    else {
-      result = [];
+      result.concat(cmdArray);
     }
     this._command = result;
   }
