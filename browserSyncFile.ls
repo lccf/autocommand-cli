@@ -102,11 +102,12 @@ compileCallback = (file) !->
     console.log 'unknown file type.'
 # }}}
 # browserSync {{{
-browserSync.init do
-  server:
-    baseDir: baseDir
-    index: \index.html
-  open: false
+browserSync.init!
+# browserSync.init do
+#   server:
+#     baseDir: baseDir
+#     index: \index.html
+#   open: false
 
 if reloadWatchFile and reloadWatchFile.length
   browserSync.watch reloadWatchFile
