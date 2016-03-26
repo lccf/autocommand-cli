@@ -64,6 +64,7 @@ class Watch {
       let fileObject = fileManage.getFile(file, this.config);
       let command: Array<string> = fileObject.command;
       let fileName: string = fileObject.fileName;
+      var cmdIndex: number = -1;
       console.log(command);
       let execCallback: any = function (err, stdo, stde) {
         if (err == null && !stde) {
@@ -72,10 +73,18 @@ class Watch {
           console.log(err || stde);
         }
       }
-      if (Array.isArray(command)) {
-        command.forEach(function (item, index) {
-          exec(item, execCallback);
-        });
+      let execCmd: any = function () {
+        if (Array.isArray(command)) {
+          let currCmd: string = command[++cmdIndex];
+          if (command.length <= cmdIndex + 1) {
+            cmdIndex = -1;
+          }
+        } else {
+          currCmd = command;
+        }
+        if (currCmd) {
+          exec(currCmd, execCallback);
+        }
       }
     }
     compileCallback(file: string): void {
