@@ -74,13 +74,9 @@ class Watch {
         }
       }
       let execCmd: any = function () {
-        if (Array.isArray(command)) {
-          let currCmd: string = command[++cmdIndex];
-          if (command.length <= cmdIndex + 1) {
-            cmdIndex = -1;
-          }
-        } else {
-          currCmd = command;
+        let currCmd: string = command[++cmdIndex];
+        if (command.length <= cmdIndex + 1) {
+          cmdIndex = -1;
         }
         if (currCmd) {
           exec(currCmd, execCallback);
