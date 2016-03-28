@@ -39,7 +39,7 @@ class fileManage {
     return this._cmdPath;
   }
   /* 执行命令 */
-  private _command: Array<string>
+  private _command: Array<string>;
   get command(): Array<string> {
     return this._command;
   }
@@ -106,7 +106,7 @@ class fileManage {
         });
         cmdArray[i] = item;
       }
-      result.concat(cmdArray);
+      result = result.concat(cmdArray);
     }
     this._command = result;
   }
