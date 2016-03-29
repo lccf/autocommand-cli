@@ -65,6 +65,7 @@ class Watch {
       let command: Array<string> = fileObject.command;
       let fileName: string = fileObject.fileName;
       var cmdIndex: number = -1;
+      console.log('command:');
       console.log(command);
       let execCallback: any = function (err, stdo, stde) {
         if (err == null && !stde) {
@@ -79,9 +80,11 @@ class Watch {
           cmdIndex = -1;
         }
         if (currCmd) {
-          exec(currCmd, execCallback);
+          console.log(currCmd);
+          // exec(currCmd, execCallback);
         }
       }
+      execCmd();
     }
     compileCallback(file: string): void {
       if (this.checkIgnore(file) != true) {
