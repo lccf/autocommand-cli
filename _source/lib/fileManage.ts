@@ -44,6 +44,12 @@ class fileManage {
     return this._command;
   }
 
+  /* 文件名 */
+  private _file: string;
+  get file(): string {
+    return this._file;
+  }
+
   public parseFileExt(): void {
     let ext: string = path.extname(this.file);
     this._fileExt = ext;
@@ -109,6 +115,25 @@ class fileManage {
       result = result.concat(cmdArray);
     }
     this._command = result;
+    if (cmdNode.file) {
+      this._file = cmdNode.file.replace(/\#\{\$([^}]+)\}/g, function (a, b) {
+        if (b == 'file') {
+          return file;
+        }
+        else if (b == 'fileName') {
+          return fileName;
+        }
+        else if (b == 'relativePath') {
+          return relativePath;
+        }
+        else if (variable && variable[b]) {
+          return variable[b];
+        }
+        else {
+          return a;
+        }
+      });
+    }
   }
   /* 构造函数 */
   constructor(file: string, config: configStructure) {
