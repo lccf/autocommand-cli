@@ -88,51 +88,37 @@ class fileManage {
       pathNode = cmdDefine;
     }
 
+    let varReplace: any = function(a, b) {
+      if (b == 'file') {
+        return file;
+      }
+      else if (b == 'fileName') {
+        return fileName;
+      }
+      else if (b == 'relativePath') {
+        return relativePath;
+      }
+      else if (variable && variable[b]) {
+        return variable[b];
+      }
+      else {
+        return a;
+      }
+    }
+
     let cmdNode: any = pathNode[ext];
     if (cmdNode) {
       cmdArray = [].concat(cmdNode.command);
       for(var i=0, j = cmdArray.length; i<j; i++) {
         let item: string = cmdArray[i];
-        item = item.replace(/\#\{\$([^}]+)\}/g, function (a, b) {
-          if (b == 'file') {
-            return file;
-          }
-          else if (b == 'fileName') {
-            return fileName;
-          }
-          else if (b == 'relativePath') {
-            return relativePath;
-          }
-          else if (variable && variable[b]) {
-            return variable[b];
-          }
-          else {
-            return a;
-          }
-        });
+        item = item.replace(/\#\{\$([^}]+)\}/g, varReplace);
         cmdArray[i] = item;
       }
       result = result.concat(cmdArray);
     }
     this._command = result;
     if (cmdNode.file) {
-      this._file = cmdNode.file.replace(/\#\{\$([^}]+)\}/g, function (a, b) {
-        if (b == 'file') {
-          return file;
-        }
-        else if (b == 'fileName') {
-          return fileName;
-        }
-        else if (b == 'relativePath') {
-          return relativePath;
-        }
-        else if (variable && variable[b]) {
-          return variable[b];
-        }
-        else {
-          return a;
-        }
-      });
+      this._file = cmdNode.file.replace(/\#\{\$([^}]+)\}/g, varReplace);
     }
   }
   /* 构造函数 */
