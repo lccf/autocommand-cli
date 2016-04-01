@@ -17,7 +17,7 @@ class fileManage {
     return fileObject;
   }
   config: configStructure;
-  private file: string;
+  private originfile: string;
   /* 获取文件名 */
   private _fileName: string;
   get fileName(): string {
@@ -51,21 +51,21 @@ class fileManage {
   }
 
   public parseFileExt(): void {
-    let ext: string = path.extname(this.file);
+    let ext: string = path.extname(this.originfile);
     this._fileExt = ext;
   }
   public parseFileName(): void {
-    let fileName: string = path.basename(this.file, this.fileExt);
+    let fileName: string = path.basename(this.originfile, this.fileExt);
     this._fileName = fileName;
   }
   public parseFilePath(): void {
-    let filePath: string = path.dirname(this.file);
+    let filePath: string = path.dirname(this.originfile);
     this._filePath = filePath;
   }
   public parseFileCommand(): void {
     let config = this.config;
     let result: Array<any> = [];
-    let file: string = this.file;
+    let file: string = this.originfile;
     let fileName: string = this.fileName;
     let filePath: string = this.filePath;
     let ext: string = this.fileExt;
@@ -124,7 +124,7 @@ class fileManage {
   /* 构造函数 */
   constructor(file: string, config: configStructure) {
     this.config = config;
-    this.file = file;
+    this.originfile = file;
     this.parseFileExt();
     this.parseFileName();
     this.parseFilePath();
