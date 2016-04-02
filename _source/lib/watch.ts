@@ -63,15 +63,13 @@ class Watch {
     compileTask(file: string, reload: any): void {
       let fileObject = fileManage.getFile(file, this.config);
       let command: Array<string> = fileObject.command;
-      let fileName: string = fileObject.fileName;
+      let fileName: string = fileObject.file;
       var cmdIndex: number = -1;
-      console.log('command:');
-      console.log(command);
       let execCallback: any = function (err, stdo, stde) {
         if (err == null && !stde) {
           console.log("compiled "+fileName);
         } else {
-          console.log(err || stde);
+          console.error(err || stde);
         }
       }
       let execCmd: any = function () {
@@ -80,8 +78,7 @@ class Watch {
           cmdIndex = -1;
         }
         if (currCmd) {
-          console.log(currCmd);
-          // exec(currCmd, execCallback);
+          exec(currCmd, execCallback);
         }
       }
       execCmd();
