@@ -11,15 +11,15 @@ let exec = child_process.exec;
 
 class Watch {
     config: configStructure;
-    workPath: string;
+    basePath: string;
     browserSync: any;
     run(options: any): void {
       let configFile = '_config';
       if (options.config && options.config != true) {
         configFile = options.config;
       }
-      this.workPath = process.cwd();
-      configFile = path.normalize(this.workPath + '/' + configFile);
+      this.basePath = process.cwd();
+      configFile = path.normalize(this.basePath + '/' + configFile);
       if (!this.config) {
         this.config = configUtil.getConfig(configFile);
       }
@@ -32,7 +32,7 @@ class Watch {
         for(let i=0, j=config.watchFile.length; i<j; i++) {
           let file: string = config.watchFile[i];
           file = file.replace(/\\/g, '/');
-          watchFile.push(path.normalize(this.workPath + '/' + file));
+          watchFile.push(path.normalize(this.basePath + '/' + file));
         }
         /* if (config.browserSync) {
           this.browserSync.init(browserSync);
@@ -40,7 +40,6 @@ class Watch {
         else {
           this.browserSync.init();
         }
-        console.log(watchFile);
         this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this)); */
         this.compileCallback('/Users/leaf/Documents/project/autocommand-cli/testDir/test.sass');
       }
@@ -64,8 +63,16 @@ class Watch {
       let fileObject = fileManage.getFile(file, this.config);
       let command: Array<string> = fileObject.command;
       let fileName: string = fileObject.file;
+      let workPath: string = '';
+      let basePath: string = this.basePath;
       var cmdIndex: number = -1;
+      if (fileObject.cmdPath && fileObject.cmdPath != '~') {
+        workPath = path.normalize(fileObject.filePath +'/'+ fileObject.cmdPath);
+      }
       let execCallback: any = function (err, stdo, stde) {
+        if (workPath) {
+          process.chdir(basePath);
+        }
         if (err == null && !stde) {
           console.log("compiled "+fileName);
         } else {
@@ -78,6 +85,9 @@ class Watch {
           cmdIndex = -1;
         }
         if (currCmd) {
+          if (workPath) {
+            process.chdir(workPath);
+          }
           exec(currCmd, execCallback);
         }
       }
