@@ -87,6 +87,9 @@ class fileManage {
     else {
       pathNode = cmdDefine;
     }
+    if (pathNode.path) {
+      this._cmdPath = pathNode.path;
+    }
 
     let varReplace: any = function(a, b) {
       if (b == 'file') {
