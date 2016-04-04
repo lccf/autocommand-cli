@@ -19,7 +19,7 @@ class Watch {
         configFile = options.config;
       }
       this.basePath = process.cwd();
-      configFile = path.normalize(this.basePath + '/' + configFile);
+      configFile = path.resolve(this.basePath, configFile);
       if (!this.config) {
         this.config = configUtil.getConfig(configFile);
       }
@@ -32,7 +32,7 @@ class Watch {
         for(let i=0, j=config.watchFile.length; i<j; i++) {
           let file: string = config.watchFile[i];
           file = file.replace(/\\/g, '/');
-          watchFile.push(path.normalize(this.basePath + '/' + file));
+          watchFile.push(path.resolve(this.basePath, file));
         }
         /* if (config.browserSync) {
           this.browserSync.init(browserSync);
@@ -67,7 +67,7 @@ class Watch {
       let basePath: string = this.basePath;
       var cmdIndex: number = -1;
       if (fileObject.cmdPath && fileObject.cmdPath != '~') {
-        workPath = path.normalize(fileObject.filePath +'/'+ fileObject.cmdPath);
+        workPath = path.resolve(fileObject.filePath, fileObject.cmdPath);
       }
       let execCallback: any = function (err, stdo, stde) {
         if (workPath) {
