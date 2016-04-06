@@ -13,7 +13,7 @@ class configUtil {
     }
     return config;
   }
-  public static read (configFile: string): any {
+  public static read(configFile: string): any {
     let result: any = null;
     if (!configFile.length) {
       configFile = '_config';
@@ -32,6 +32,14 @@ class configUtil {
     }
     else {
       console.log('config file not found');
+    }
+  }
+  private static initConfig(options): any {
+    console.log(options);
+  }
+  public static action(action, options): any {
+    if (action == 'init') {
+      this.initConfig(options);
     }
   }
 }
