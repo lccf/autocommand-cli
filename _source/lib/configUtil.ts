@@ -35,7 +35,48 @@ class configUtil {
     }
   }
   private static initConfig(options): any {
-    console.log(options);
+    let configContent: string = ' { '+
+      '   // 侦听的文件 '+
+      '   "watchFile": ["*.sass", "*.scss", "*.ts", "*.sass"], '+
+      '   // 过滤 '+
+      '   "ignore": ["^_", ".d.ts$"], '+
+      '   // 变量 '+
+      '   "variable": { }, '+
+      '   // 定义 '+
+      '   "define": { '+
+      '     "jade/": { '+
+      '       // ~代表baseDir '+
+      '       // .代表当前 '+
+      '       "path": "~", '+
+      '       ".jade": { '+
+      '         "command": [ '+
+      '           "jade -Po ../ jade/#{$fileName}.jade" '+
+      '         ] '+
+      '       } '+
+      '     }, '+
+      '     ".sass": { '+
+      '       "file": "#{$fileName}.css", '+
+      '       "command": "sass #{$file} #{$fileName}.css" '+
+      '     }, '+
+      '     ".ls": { '+
+      '       "command": [ '+
+      '         "lsc -cbp live/#{$fileName}.ls>../js/#{$fileName}.js" '+
+      '          /* , "cp -fp ../js/#{$fileName}.js ../../../statics/web/africa/js" */ '+
+      '       ] '+
+      '     } '+
+      '   } '+
+      ' } ';
+    let fileName = '_config';
+    if (options.file) {
+      fileName = options.file;
+    }
+    try {
+      fs.writeFileSync(fileName, configContent);
+    }
+    catch (e) {
+      console.log('failure error:');
+      console.log(e);
+    }
   }
   public static action(action, options): any {
     if (action == 'init') {
