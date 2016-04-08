@@ -13,9 +13,11 @@ module.exports = function (args:string[]):void {
     .option('-c, --config [config]', 'config file')
     .action(watchAction.run.bind(watchAction));
 
-    program.command('config [action]', '')
+    program.command('config', '')
     .description('config tool')
-    .option('-f, --file [config]', 'config file')
+    .option('-c, --config [config]', 'config file')
+    .option('-i, --init', 'create config file')
+    .option('-t, --test', 'test config file')
     .action(configUtil.action.bind(configUtil));
 
     program.parse(args);

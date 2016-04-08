@@ -68,8 +68,8 @@ class configUtil {
       " } \n";
 
     let fileName = '_config';
-    if (options.file) {
-      fileName = options.file;
+    if (options.config) {
+      fileName = options.config;
     }
     try {
       fs.writeFileSync(fileName, configContent);
@@ -79,9 +79,25 @@ class configUtil {
       console.log(e);
     }
   }
-  public static action(action, options): any {
-    if (action == 'init') {
+  public static testConfig(options): any {
+    let fileName = '_config';
+    if (options.config) {
+      fileName = options.config;
+    }
+    let config: configStructure = this.read(fileName);
+    if (config) {
+      console.log('success');
+    }
+    else {
+      console.log('failure');
+    }
+  }
+  public static action(options): any {
+    if (options.init) {
       this.initConfig(options);
+    }
+    else if (options.test) {
+      this.testConfig(options);
     }
   }
 }
