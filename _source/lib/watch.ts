@@ -34,14 +34,22 @@ class Watch {
           file = file.replace(/\\/g, '/');
           watchFile.push(path.resolve(this.basePath, file));
         }
-        /* if (config.browserSync) {
-          this.browserSync.init(browserSync);
+        if (!options.test) {
+          if (config.browserSync) {
+            this.browserSync.init(browserSync);
+          }
+          else {
+            this.browserSync.init();
+          }
+          this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
+        } else {
+          let testFile: string = 'test.sass';
+          if (options.test !== true) {
+            testFile = options.test;
+          }
+          // console.log(options.test);
+          this.compileCallback(path.resolve(this.basePath +'/'+ testFile));
         }
-        else {
-          this.browserSync.init();
-        }
-        this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this)); */
-        this.compileCallback('/Users/leaf/Documents/project/autocommand-cli/testDir/test.sass');
       }
     }
     /* 检测忽略 */

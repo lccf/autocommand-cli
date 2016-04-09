@@ -11,6 +11,7 @@ module.exports = function (args:string[]):void {
     program.command('watch', '')
     .description('watch file change')
     .option('-c, --config [config]', 'config file')
+    .option('-t, --test [testFile]', 'test mode')
     .action(watchAction.run.bind(watchAction));
 
     program.command('config', '')
