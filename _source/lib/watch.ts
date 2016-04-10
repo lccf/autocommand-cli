@@ -27,14 +27,14 @@ class Watch {
         this.browserSync = browserSync.create();
       }
       let config = this.config;
-      let watchFile: Array<string> = [];
-      if (config.watchFile || config.watchFile.length) {
-        for(let i=0, j=config.watchFile.length; i<j; i++) {
-          let file: string = config.watchFile[i];
-          file = file.replace(/\\/g, '/');
-          watchFile.push(path.resolve(this.basePath, file));
-        }
-        if (!options.test) {
+      if (!options.test) {
+        let watchFile: Array<string> = [];
+        if (config.watchFile || config.watchFile.length) {
+          for(let i=0, j=config.watchFile.length; i<j; i++) {
+            let file: string = config.watchFile[i];
+            file = file.replace(/\\/g, '/');
+            watchFile.push(path.resolve(this.basePath, file));
+          }
           if (config.browserSync) {
             this.browserSync.init(browserSync);
           }
@@ -42,14 +42,14 @@ class Watch {
             this.browserSync.init();
           }
           this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
-        } else {
-          let testFile: string = 'test.sass';
-          if (options.test !== true) {
-            testFile = options.test;
-          }
-          // console.log(options.test);
-          this.compileCallback(path.resolve(this.basePath +'/'+ testFile));
         }
+      } else {
+        let testFile: string = 'test.sass';
+        if (options.test !== true) {
+          testFile = options.test;
+        }
+        // console.log(options.test);
+        this.compileCallback(path.resolve(this.basePath +'/'+ testFile));
       }
     }
     /* 检测忽略 */
