@@ -23,9 +23,6 @@ class Watch {
       if (!this.config) {
         this.config = configUtil.getConfig(configFile);
       }
-      if (!this.browserSync) {
-        this.browserSync = browserSync.create();
-      }
       let config = this.config;
       if (!options.test) {
         let watchFile: Array<string> = [];
@@ -35,8 +32,11 @@ class Watch {
             file = file.replace(/\\/g, '/');
             watchFile.push(path.resolve(this.basePath, file));
           }
+          if (!this.browserSync) {
+            this.browserSync = browserSync.create();
+          }
           if (config.browserSync) {
-            this.browserSync.init(browserSync);
+            this.browserSync.init(config.browserSync);
           }
           else {
             this.browserSync.init();
@@ -105,7 +105,7 @@ class Watch {
       if (this.checkIgnore(file) != true) {
         return;
       }
-      this.compileTask(file, this.browserSync.reload);
+      this.compileTask(file, this.browserSync ? this.browserSync.reload : null);
     }
 }
 
