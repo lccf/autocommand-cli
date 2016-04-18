@@ -6,6 +6,7 @@ let fileManage: any = require('./fileManage.js');
 import path = require('path');
 import child_process = require('child_process');
 import browserSync = require('browser-sync');
+import chokidar = require('chokidar');
 
 let exec = child_process.exec;
 
@@ -32,6 +33,8 @@ class Watch {
             file = file.replace(/\\/g, '/');
             watchFile.push(path.resolve(this.basePath, file));
           }
+          if (this.config.browserSync) {
+
           if (!this.browserSync) {
             this.browserSync = browserSync.create();
           }
@@ -42,6 +45,10 @@ class Watch {
             this.browserSync.init();
           }
           this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
+          }
+          else {
+            this.watcher = chokidar.watch(watchFile).on('change', this.compileCallback.bind(this));
+          }
         }
       } else {
         let testFile: string = 'test.sass';
