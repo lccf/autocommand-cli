@@ -14,6 +14,7 @@ class Watch {
     config: configStructure;
     basePath: string;
     browserSync: any;
+    watcher: any;
     run(options: any): void {
       let configFile = '_config';
       if (options.config && options.config != true) {
