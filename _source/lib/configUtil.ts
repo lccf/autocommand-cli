@@ -35,38 +35,7 @@ class configUtil {
     }
   }
   private static initConfig(options): any {
-    let configContent: string = "{ \n"+
-      "   // 侦听的文件 \n"+
-      "   \"watchFile\": [\"*.sass\", \"*.scss\", \"*.ts\", \"*.sass\"], \n"+
-      "   // 过滤 \n"+
-      "   \"ignore\": [\"^_\", \".d.ts$\"], \n"+
-      "   // 变量 \n"+
-      "   \"variable\": { }, \n"+
-      "   // 定义 \n"+
-      "   \"define\": { \n"+
-      "     \"jade/\": { \n"+
-      "       // ~代表baseDir \n"+
-      "       // .代表当前 \n"+
-      "       \"path\": \"~\", \n"+
-      "       \".jade\": { \n"+
-      "         \"command\": [ \n"+
-      "           \"jade -Po ../ jade/#{$fileName}.jade\" \n"+
-      "         ] \n"+
-      "       } \n"+
-      "     }, \n"+
-      "     \".sass\": { \n"+
-      "       \"file\": \"#{$fileName}.css\", \n"+
-      "       \"command\": \"sass #{$file} #{$fileName}.css\" \n"+
-      "     }, \n"+
-      "     \".ls\": { \n"+
-      "       \"command\": [ \n"+
-      "         \"lsc -cbp live/#{$fileName}.ls>../js/#{$fileName}.js\" \n"+
-      "          /* , \"cp -fp ../js/#{$fileName}.js ../../../statics/web/africa/js\" */ \n"+
-      "       ] \n"+
-      "     } \n"+
-      "   } \n"+
-      " } \n";
-
+    let configContent: string = '{\n  // 侦听的文件\n  "watchFile": ["*.jade", "*.sass", "*.ts"],\n  // 过滤\n  "ignore": ["^_", ".d.ts$"],\n  // 变量\n  "variable": { },\n  // 定义\n  "define": {\n    "jade/": {\n      // ~代表baseDir\n      // .代表当前\n      "path": "~",\n      ".jade": {\n        "command": [\n          "jade -Po ../ jade/#{fileName}.jade"\n        ]\n      }\n    },\n    ".sass": {\n      "file": "#{fileName}.css",\n      "command": "sass #{file} #{fileName}.css"\n    },\n    ".ls": {\n      "command": [\n        "lsc -cbp live/#{fileName}.ls>../js/#{fileName}.js"\n      ]\n    }\n  }\n}';
     let fileName = '_config';
     if (options.config) {
       fileName = options.config;
