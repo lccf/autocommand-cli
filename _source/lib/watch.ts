@@ -113,7 +113,7 @@ class Watch {
       if (this.checkIgnore(file) != true) {
         return;
       }
-      this.compileTask(file, this.browserSync ? this.browserSync.reload : null);
+      this.compileTask(file, this.browserSync && this.config.browserSync.reload ? this.browserSync.reload : null);
     }
 }
 
