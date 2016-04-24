@@ -48,6 +48,7 @@ class Watch {
           this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
           }
           else {
+            console.log('watch model，files:\n'+watchFile.join('\n'));
             this.watcher = chokidar.watch(watchFile).on('change', this.compileCallback.bind(this));
           }
         }
