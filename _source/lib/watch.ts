@@ -35,17 +35,16 @@ class Watch {
             watchFile.push(path.resolve(this.basePath, file));
           }
           if (this.config.browserSync) {
-
-          if (!this.browserSync) {
-            this.browserSync = browserSync.create();
-          }
-          if (config.browserSync) {
-            this.browserSync.init(config.browserSync);
-          }
-          else {
-            this.browserSync.init();
-          }
-          this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
+            if (!this.browserSync) {
+              this.browserSync = browserSync.create('autocommand-cli');
+            }
+            if (config.browserSync && config.browserSync.init) {
+              this.browserSync.init(config.browserSync.init);
+            }
+            else {
+              this.browserSync.init();
+            }
+            this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
           }
           else {
             console.log('watch model，files:\n'+watchFile.join('\n'));
