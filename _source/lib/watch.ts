@@ -1,5 +1,4 @@
 /// <reference path="../../typings/main.d.ts"/>
-/// <reference path="../declare/main.d.ts"/>
 
 let configUtil: any = require('./configUtil.js');
 let fileManage: any = require('./fileManage.js');
@@ -7,6 +6,7 @@ import path = require('path');
 import child_process = require('child_process');
 import browserSync = require('browser-sync');
 import chokidar = require('chokidar');
+import {configStructure} from "../declare/config";
 
 let exec = child_process.exec;
 

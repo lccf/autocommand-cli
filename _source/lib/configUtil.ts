@@ -1,5 +1,6 @@
 /// <reference path="../../typings/main" />
 import fs = require('fs');
+import {configStructure} from "../declare/config";
 
 class configUtil {
   private static _instance: Array<any> = [];

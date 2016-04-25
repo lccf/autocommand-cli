@@ -1,8 +1,11 @@
+import browserSync = require('browser-sync');
+
 interface bSyncConfigStructure {
-  init: any,
-  reload: boolean
+  init: browserSync.Options,
+  reload: Boolean
 }
-interface configStructure {
+
+export interface configStructure {
   watchFile: string,
   ignore: Array<string|any>,
   variable: any,
