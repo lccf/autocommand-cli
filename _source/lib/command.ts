@@ -21,5 +21,8 @@ module.exports = function (args:string[]):void {
     .option('-t, --test', 'test config file')
     .action(configUtil.action.bind(configUtil));
 
+    program.command('run', '')
+    .description('run command by config');
+
     program.parse(args);
 }
