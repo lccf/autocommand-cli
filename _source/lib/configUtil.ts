@@ -29,7 +29,6 @@ class configUtil {
       catch(e) {
         console.log('parse config error');
       }
-      finally {}
     }
     else {
       console.log('config file not found');
