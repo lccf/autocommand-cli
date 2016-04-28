@@ -22,7 +22,8 @@ module.exports = function (args:string[]):void {
     .action(configUtil.action.bind(configUtil));
 
     program.command('run', '')
-    .description('run command by config');
+    .description('run command by config')
+    .action(watchAction.compile.bind(watchAction));
 
     program.parse(args);
 }
