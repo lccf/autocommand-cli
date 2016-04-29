@@ -7,6 +7,7 @@ import child_process = require('child_process');
 import browserSync = require('browser-sync');
 import chokidar = require('chokidar');
 import {configStructure} from "../declare/config";
+let glob = require('glob');
 
 let exec = child_process.exec;
 
@@ -30,28 +31,39 @@ class Watch {
       }
       let config = this.config;
       if (!options.test) {
+
         let watchFile: Array<string> = [];
         if (config.watchFile || config.watchFile.length) {
-          for(let i=0, j=config.watchFile.length; i<j; i++) {
-            let file: string = config.watchFile[i];
+          for(let file of config.watchFile) {
             file = file.replace(/\\/g, '/');
             watchFile.push(path.resolve(this.basePath, file));
           }
-          if (this.config.browserSync) {
-            if (!this.browserSync) {
-              this.browserSync = browserSync.create('autocommand-cli');
-            }
-            if (config.browserSync && config.browserSync.init) {
-              this.browserSync.init(config.browserSync.init);
+          if (!options.compile) {
+            if (this.config.browserSync) {
+              if (!this.browserSync) {
+                this.browserSync = browserSync.create('autocommand-cli');
+              }
+              if (config.browserSync && config.browserSync.init) {
+                this.browserSync.init(config.browserSync.init);
+              }
+              else {
+                this.browserSync.init();
+              }
+              this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
             }
             else {
-              this.browserSync.init();
+              console.log('watch model，files:\n'+watchFile.join('\n'));
+              this.watcher = chokidar.watch(watchFile).on('change', this.compileCallback.bind(this));
             }
-            this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
-          }
-          else {
-            console.log('watch model，files:\n'+watchFile.join('\n'));
-            this.watcher = chokidar.watch(watchFile).on('change', this.compileCallback.bind(this));
+          } else {
+            let fileList: Array<string> = [];
+
+            for (let item of watchFile) {
+              let file = glob.sync(item);
+              fileList = fileList.concat(file);
+            }
+            console.log('find files:\n'+fileList.join('\n'));
+            fileList.map(this.compileCallback.bind(this));
           }
         }
       } else {

@@ -17,6 +17,7 @@
     "browser-sync": "^2.11.1",
     "chokidar": "^1.4.3",
     "commander": "^2.9.0",
+    "glob": "^7.0.3",
     "node-notifier": "^4.5.0"
   },
   "bin": {
