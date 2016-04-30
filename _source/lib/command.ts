@@ -9,14 +9,13 @@ module.exports = function (args:string[]):void {
     program.version(pkg.version);
 
     program.command('watch', '')
-    .description('watch file change')
+    .description('watch file change run command')
     .option('-c, --config [config]', 'config file')
     .option('-t, --test [testFile]', 'test mode')
     .action(watchAction.run.bind(watchAction));
 
     program.command('config', '')
-    .description('config tool')
-    .option('-c, --config [config]', 'config file')
+    .description('create and test config file')
     .option('-i, --init', 'create config file')
     .option('-t, --test', 'test config file')
     .action(configUtil.action.bind(configUtil));
@@ -26,4 +25,8 @@ module.exports = function (args:string[]):void {
     .action(watchAction.compile.bind(watchAction));
 
     program.parse(args);
+
+    if(!process.argv.slice(2).length) {
+      program.help();
+    }
 }
