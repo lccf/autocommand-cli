@@ -13,6 +13,7 @@ let exec = child_process.exec;
 
 class Watch {
     config: configStructure;
+    configFile: string;
     basePath: string;
     browserSync: any;
     watcher: any;
@@ -29,54 +30,85 @@ class Watch {
       if (!this.config) {
         this.config = configUtil.getConfig(configFile);
       }
-      this.startWatch(options);
-    }
-    startWatch(options: any): void {
-      let config = this.config;
+      this.configFile = configFile;
       if (!options.test) {
-
-        let watchFile: Array<string> = [];
-        if (config.watchFile || config.watchFile.length) {
-          for(let file of config.watchFile) {
-            file = file.replace(/\\/g, '/');
-            watchFile.push(path.resolve(this.basePath, file));
-          }
-          if (!options.compile) {
-            if (this.config.browserSync) {
-              if (!this.browserSync) {
-                this.browserSync = browserSync.create('autocommand-cli');
-              }
-              if (config.browserSync && config.browserSync.init) {
-                this.browserSync.init(config.browserSync.init);
-              }
-              else {
-                this.browserSync.init();
-              }
-              this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
-            }
-            else {
-              console.log('watch model，files:\n'+watchFile.join('\n'));
-              this.watcher = chokidar.watch(watchFile).on('change', this.compileCallback.bind(this));
-            }
-          } else {
-            let fileList: Array<string> = [];
-
-            for (let item of watchFile) {
-              let file = glob.sync(item);
-              fileList = fileList.concat(file);
-            }
-            console.log('find files:\n'+fileList.join('\n'));
-            fileList.map(this.compileCallback.bind(this));
-          }
+        if (!options.compile) {
+          this.runCommand();
+        }
+        else {
+          this.startWatch();
         }
       } else {
-        let testFile: string = 'test.sass';
-        if (options.test !== true) {
-          testFile = options.test;
-        }
-        // console.log(options.test);
-        this.compileCallback(path.resolve(this.basePath +'/'+ testFile));
+        this.testCommand(options.test);
       }
+    }
+    testCommand(testFile: any): void {
+      if (testFile === true) {
+        testFile = 'test.sass';
+      }
+      this.compileCallback(path.resolve(this.basePath +'/'+ testFile));
+    }
+    runCommand(): void {
+      let config = this.config;
+
+      let watchFile: Array<string> = [];
+      if (config.watchFile || config.watchFile.length) {
+        for(let file of config.watchFile) {
+          file = file.replace(/\\/g, '/');
+          watchFile.push(path.resolve(this.basePath, file));
+        }
+        let fileList: Array<string> = [];
+
+        for (let item of watchFile) {
+          let file = glob.sync(item);
+          fileList = fileList.concat(file);
+        }
+        console.log('find files:\n'+fileList.join('\n'));
+        fileList.map(this.compileCallback.bind(this));
+      }
+    }
+    startWatch(): void {
+      let config = this.config;
+
+      let watchFile: Array<string> = [];
+      if (config.watchFile || config.watchFile.length) {
+        for(let file of config.watchFile) {
+          file = file.replace(/\\/g, '/');
+          watchFile.push(path.resolve(this.basePath, file));
+        }
+        if (this.config.browserSync) {
+          if (!this.browserSync) {
+            this.browserSync = browserSync.create('autocommand-cli');
+          }
+          if (config.browserSync && config.browserSync.init) {
+            this.browserSync.init(config.browserSync.init);
+          }
+          else {
+            this.browserSync.init();
+          }
+          this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
+        }
+        else {
+          console.log('watch model，files:\n'+watchFile.join('\n'));
+          this.watcher = chokidar.watch(watchFile).on('change', this.compileCallback.bind(this));
+        }
+      }
+    }
+    stopWatch(): void {
+      if(this.browserSync) {
+        this.browserSync.exit();
+        this.browserSync = null;
+      }
+      else if (this.watcher) {
+        this.watcher.close();
+        this.watcher = null;
+      }
+      fileManage.clear();
+    }
+    reloadWatch(): void {
+      this.stopWatch();
+      this.config = configUtil.getConfig(this.configFile, true);
+      this.startWatch();
     }
     /* 检测忽略 */
     checkIgnore(file: string): boolean {
