@@ -29,6 +29,9 @@ class Watch {
       if (!this.config) {
         this.config = configUtil.getConfig(configFile);
       }
+      this.startWatch(options);
+    }
+    startWatch(options: any): void {
       let config = this.config;
       if (!options.test) {
 
