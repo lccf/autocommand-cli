@@ -13,9 +13,17 @@ class fileManage {
       fileObject = fileCache[file];
     } else {
       fileObject = new fileManage(file, config);
-      this._instance[file] = fileObject;
+      fileManage._instance[file] = fileObject;
     }
     return fileObject;
+  }
+  public static clear() {
+    let fileCache: any = fileManage._instance;
+    for (let key in fileCache) {
+      fileCache[key] = null;
+    }
+    fileCache = {}
+    fileManage._instance = fileCache;
   }
   config: configStructure;
   private originfile: string;

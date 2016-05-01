@@ -4,9 +4,9 @@ import {configStructure} from "../declare/config";
 
 class configUtil {
   private static _instance: Array<any> = [];
-  public static getConfig(configFile: string): JSON {
+  public static getConfig(configFile: string, force: boolean = false): JSON {
     let config: any = null;
-    if (!configUtil._instance[configFile]) {
+    if (!configUtil._instance[configFile] || force) {
       config = configUtil.read(configFile);
     }
     else {
