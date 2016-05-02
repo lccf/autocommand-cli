@@ -20,6 +20,7 @@ class Watch {
     compile(): void {
       this.run({compile: true});
     }
+    /* 主入口函数 */
     run(options: any): void {
       let configFile = '_config';
       if (options.config && options.config != true) {
@@ -42,12 +43,14 @@ class Watch {
         this.testCommand(options.test);
       }
     }
+    /* 测试模式 */
     testCommand(testFile: any): void {
       if (testFile === true) {
         testFile = 'test.sass';
       }
       this.compileCallback(path.resolve(this.basePath +'/'+ testFile));
     }
+    /* 编译模式 */
     runCommand(): void {
       let config = this.config;
 
@@ -67,6 +70,7 @@ class Watch {
         fileList.map(this.compileCallback.bind(this));
       }
     }
+    /* 监听模式 */
     startWatch(): void {
       let config = this.config;
 
@@ -94,6 +98,7 @@ class Watch {
         }
       }
     }
+    /* 停止监听 */
     stopWatch(): void {
       if(this.browserSync) {
         this.browserSync.exit();
@@ -105,6 +110,7 @@ class Watch {
       }
       fileManage.clear();
     }
+    /* 重新载入监听及配置 */
     reloadWatch(): void {
       this.stopWatch();
       this.config = configUtil.getConfig(this.configFile, true);
@@ -125,6 +131,7 @@ class Watch {
 
       return allow;
     }
+    /* 编译任务 */
     compileTask(file: string, reload: any): void {
       let fileObject = fileManage.getFile(file, this.config);
       let command: Array<string> = fileObject.command;
@@ -132,8 +139,15 @@ class Watch {
       let workPath: string = '';
       let basePath: string = this.basePath;
       var cmdIndex: number = -1;
-      if (fileObject.cmdPath && fileObject.cmdPath != '~') {
-        workPath = path.resolve(fileObject.filePath, fileObject.cmdPath);
+      if (fileObject.cmdPath) {
+        // 相对于当前配置文件的工作路径计算
+        if (fileObject.cmdPath.match(/^~\//)) {
+          workPath = path.resolve(basePath, fileObject.cmdPath.substr(2));
+        }
+        // 当对于当前文件的工作路径计算
+        else if (fileObject !== '~') {
+          workPath = path.resolve(fileObject.filePath, fileObject.cmdPath);
+        }
       }
       let execCallback: any = function (err, stdo, stde) {
         if (workPath) {
@@ -159,6 +173,7 @@ class Watch {
       }
       execCmd();
     }
+    /* 编译回调 */
     compileCallback(file: string): void {
       if (this.checkIgnore(file) != true) {
         return;
