@@ -48,7 +48,7 @@ class configUtil {
       console.log(e);
     }
   }
-  public static testConfig(options): any {
+  public static testConfig(options): boolean {
     let fileName = '_config';
     if (options.config) {
       fileName = options.config;
@@ -56,9 +56,11 @@ class configUtil {
     let config: configStructure = this.read(fileName);
     if (config) {
       console.log('success');
+      return true;
     }
     else {
       console.log('failure');
+      return false;
     }
   }
   public static action(options): any {
