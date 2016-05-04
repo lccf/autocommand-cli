@@ -80,6 +80,7 @@ class Watch {
           file = file.replace(/\\/g, '/');
           watchFile.push(path.resolve(this.basePath, file));
         }
+        watchFile.push(this.configFile);
         if (this.config.browserSync) {
           if (!this.browserSync) {
             this.browserSync = browserSync.create('autocommand-cli');
@@ -175,10 +176,17 @@ class Watch {
     }
     /* 编译回调 */
     compileCallback(file: string): void {
-      if (this.checkIgnore(file) != true) {
-        return;
+      if (file == this.configFile) {
+        if (configUtil.testConfig(file)) {
+          this.reloadWatch();
+        }
       }
-      this.compileTask(file, this.browserSync && this.config.browserSync.reload ? this.browserSync.reload : null);
+      else {
+        if (this.checkIgnore(file) != true) {
+          return;
+        }
+        this.compileTask(file, this.browserSync && this.config.browserSync.reload ? this.browserSync.reload : null);
+      }
     }
 }
 
