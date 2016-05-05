@@ -27,11 +27,12 @@ class configUtil {
         return result;
       }
       catch(e) {
-        console.log('parse config error');
+        console.error(e.static);
+        throw new Error("parse config error");
       }
     }
     else {
-      console.log('config file not found');
+      throw new Error("config file not found");
     }
   }
   private static initConfig(options): any {
@@ -48,19 +49,26 @@ class configUtil {
       console.log(e);
     }
   }
-  public static testConfig(options): boolean {
+  public static testConfig(configPath: string): boolean {
     let fileName = '_config';
-    if (options.config) {
-      fileName = options.config;
+    if (configPath) {
+      fileName = configPath;
     }
     let config: configStructure = this.read(fileName);
-    if (config) {
-      console.log('success');
-      return true;
+    return config ? true : false;
+  }
+  public static testAction(configPath: string): void {
+    try {
+      let result: boolean = this.testConfig(configPath)
+      if (result) {
+        console.log('success');
+      }
+      else {
+        console.log('error');
+      }
     }
-    else {
-      console.log('failure');
-      return false;
+    catch(e) {
+      console.error(e.message);
     }
   }
   public static action(options): any {
@@ -68,7 +76,7 @@ class configUtil {
       this.initConfig(options);
     }
     else if (options.test) {
-      this.testConfig(options);
+      this.testAction(options.config);
     }
   }
 }
