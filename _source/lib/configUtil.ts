@@ -3,11 +3,11 @@ import fs = require('fs');
 import {configStructure} from "../declare/config";
 
 class configUtil {
-  private static _instance: Array<any> = [];
+  private static _instance: any = {};
   public static getConfig(configFile: string, force: boolean = false): JSON {
     let config: any = null;
     if (!configUtil._instance[configFile] || force) {
-      config = configUtil.read(configFile);
+      config = configUtil._instance[configFile] = configUtil.read(configFile);
     }
     else {
       config = configUtil._instance[configFile];
