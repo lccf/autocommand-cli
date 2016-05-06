@@ -27,7 +27,7 @@ class configUtil {
         return result;
       }
       catch(e) {
-        console.error(e.static);
+        console.error(e.stack);
         throw new Error("parse config error");
       }
     }
@@ -45,8 +45,8 @@ class configUtil {
       fs.writeFileSync(fileName, configContent);
     }
     catch (e) {
-      console.log('failure error:');
-      console.log(e);
+      console.error('failure error:');
+      console.error(e.stack);
     }
   }
   public static testConfig(configPath: string): boolean {
