@@ -54,12 +54,17 @@ class configUtil {
     if (configPath) {
       fileName = configPath;
     }
-    let config: configStructure = this.read(fileName);
-    return config ? true : false;
+    try {
+      let config: configStructure = this.read(fileName);
+      return config ? true : false;
+    }
+    catch (e) {
+      return false;
+    }
   }
   public static testAction(configPath: string): void {
     try {
-      let result: boolean = this.testConfig(configPath)
+      let result: boolean = this.read(configPath);
       if (result) {
         console.log('success');
       }
