@@ -113,23 +113,27 @@ class Watch {
     }
     /* 重新载入监听及配置 */
     reloadWatch(): void {
-      this.stopWatch();
-      this.config = configUtil.getConfig(this.configFile, true);
-      this.startWatch();
+      if (configUtil.test(this.configFile)) {
+        this.stopWatch();
+        this.config = configUtil.getConfig(this.configFile, true);
+        this.startWatch();
+      }
+      else {
+        console.log('config parse error');
+      }
     }
     /* 检测忽略 */
     checkIgnore(file: string): boolean {
       let filename: string = path.basename(file);
       let allow: boolean = true;
       let ignore = this.config.ignore;
-      for(let i=0, j=ignore.length; i<j; i++) {
-        let match = new RegExp(ignore[i]);
+      for (let item of ignore) {
+        let match: RegExp = new RegExp(item);
         if (match.exec(filename)) {
           allow = false;
           break;
         }
       }
-
       return allow;
     }
     /* 编译任务 */
