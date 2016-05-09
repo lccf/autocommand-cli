@@ -16,8 +16,8 @@ module.exports = function (args:string[]):void {
 
     program.command('config', '')
     .description('create and test config file')
-    .option('-i, --init', 'create config file')
-    .option('-t, --test', 'test config file')
+    .option('-i, --init [config]', 'create config file')
+    .option('-t, --test [config]', 'test config file')
     .action(configUtil.action.bind(configUtil));
 
     program.command('run', '')
