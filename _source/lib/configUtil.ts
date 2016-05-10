@@ -3,6 +3,7 @@ import fs = require('fs');
 import {configStructure} from "../declare/config";
 
 class configUtil {
+  public static defaultConfig = '_config';
   private static _instance: any = {};
   public static getConfig(configFile: string, force: boolean = false): JSON {
     let config: any = null;
@@ -37,7 +38,7 @@ class configUtil {
   }
   private static initConfig(options): any {
     let configContent: string = '{\n  // 侦听的文件\n  "watchFile": ["*.jade", "*.sass", "*.ts"],\n  // 过滤\n  "ignore": ["^_", ".d.ts$"],\n  // 变量\n  "variable": { },\n  // 定义\n  "define": {\n    "jade/": {\n      // ~代表baseDir\n      // .代表当前\n      "path": "~",\n      ".jade": {\n        "command": [\n          "jade -Po ../ jade/#{fileName}.jade"\n        ]\n      }\n    },\n    ".sass": {\n      "file": "#{fileName}.css",\n      "command": "sass #{file} #{fileName}.css"\n    },\n    ".ls": {\n      "command": [\n        "lsc -cbp live/#{fileName}.ls>../js/#{fileName}.js"\n      ]\n    }\n  }\n}';
-    let fileName = '_config';
+    let fileName = configUtil.defaultConfig;
     if (options.config) {
       fileName = options.config;
     }
@@ -81,7 +82,7 @@ class configUtil {
       this.initConfig(options);
     }
     else if (options.test) {
-      this.testAction(options.config);
+      this.testAction(options.config || configUtil.defaultConfig);
     }
   }
 }
