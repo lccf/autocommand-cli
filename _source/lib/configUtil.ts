@@ -5,6 +5,11 @@ import {configStructure} from "../declare/config";
 class configUtil {
   public static defaultConfig = '_config';
   private static _instance: any = {};
+  /**
+   * 获取配置文件
+   * @param configFile {string} 配置文件名
+   * @param force {boolean} 是否强制更新，默认仅首次读取
+   */
   public static getConfig(configFile: string, force: boolean = false): JSON {
     let config: any = null;
     if (!configUtil._instance[configFile] || force) {
@@ -15,6 +20,11 @@ class configUtil {
     }
     return config;
   }
+
+  /**
+   * 读取配置文件
+   * @param configFile {string} 配置文件名
+   */
   public static read(configFile: string): any {
     let result: any = null;
     if (!configFile.length) {
@@ -38,7 +48,7 @@ class configUtil {
   }
   private static initConfig(options): any {
     let configContent: string = '{\n  // 侦听的文件\n  "watchFile": ["*.jade", "*.sass", "*.ts"],\n  // 过滤\n  "ignore": ["^_", ".d.ts$"],\n  // 变量\n  "variable": { },\n  // 定义\n  "define": {\n    "jade/": {\n      // ~代表baseDir\n      // .代表当前\n      "path": "~",\n      ".jade": {\n        "command": [\n          "jade -Po ../ jade/#{fileName}.jade"\n        ]\n      }\n    },\n    ".sass": {\n      "file": "#{fileName}.css",\n      "command": "sass #{file} #{fileName}.css"\n    },\n    ".ls": {\n      "command": [\n        "lsc -cbp live/#{fileName}.ls>../js/#{fileName}.js"\n      ]\n    }\n  }\n}';
-    let fileName = configUtil.defaultConfig;
+    let fileName = configUtil.defaultConfig
     if (options.config) {
       fileName = options.config;
     }
