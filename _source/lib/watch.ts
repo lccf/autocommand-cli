@@ -33,7 +33,7 @@ class Watch {
       }
       this.configFile = configFile;
       if (!options.test) {
-        if (!options.compile) {
+        if (options.compile) {
           this.runCommand();
         }
         else {
@@ -113,9 +113,11 @@ class Watch {
     }
     /* 重新载入监听及配置 */
     reloadWatch(): void {
-      if (configUtil.test(this.configFile)) {
+      if (configUtil.testConfig(this.configFile)) {
         this.stopWatch();
         this.config = configUtil.getConfig(this.configFile, true);
+        console.log("\n");
+        console.log("====================reload config====================");
         this.startWatch();
       }
       else {
