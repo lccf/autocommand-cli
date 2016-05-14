@@ -54,15 +54,15 @@ class Watch {
     runCommand(): void {
       let config = this.config;
 
-      let watchFile: Array<string> = [];
-      if (config.watchFile || config.watchFile.length) {
-        for(let file of config.watchFile) {
+      let files: Array<string> = [];
+      if (config.file || config.file.length) {
+        for(let file of config.file) {
           file = file.replace(/\\/g, '/');
-          watchFile.push(path.resolve(this.basePath, file));
+          files.push(path.resolve(this.basePath, file));
         }
         let fileList: Array<string> = [];
 
-        for (let item of watchFile) {
+        for (let item of files) {
           let file = glob.sync(item);
           fileList = fileList.concat(file);
         }
@@ -75,8 +75,8 @@ class Watch {
       let config = this.config;
 
       let watchFile: Array<string> = [];
-      if (config.watchFile || config.watchFile.length) {
-        for(let file of config.watchFile) {
+      if (config.file || config.file.length) {
+        for(let file of config.file) {
           file = file.replace(/\\/g, '/');
           watchFile.push(path.resolve(this.basePath, file));
         }

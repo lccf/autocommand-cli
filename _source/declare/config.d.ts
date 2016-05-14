@@ -6,7 +6,7 @@ interface bSyncConfigStructure {
 }
 
 export interface configStructure {
-  watchFile: string,
+  file: string,
   ignore: Array<string|any>,
   variable: any,
   define: any,
