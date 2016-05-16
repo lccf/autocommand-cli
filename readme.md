@@ -6,7 +6,7 @@ autocommand的命令行版本，使用nodejs实现。
 npm install thinkjs/autocommand-cli -g
 ```
 
-## 使用
+## 参考
 ### 生成配置文件
 ```bash
 acmd config -i, --init [config]
@@ -15,6 +15,7 @@ acmd config -i, --init [config]
 ```bash
 acmd config -t, --test [config]
 ```
+
 ### 执行命令
 ```bash
 acmd run
@@ -29,4 +30,16 @@ acmd watch
 ## 帮助
 ```bash
 acmd --help
+```
+
+## 配置
+
+### file
+侦听的文件类型
+
+示例：
+```javascript
+{
+  "file": ["*.sass", "coffee/*.coffee", "jade/**/*.jade"]
+}
 ```
