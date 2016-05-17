@@ -6,13 +6,13 @@ import {configStructure} from "../declare/config";
 
 class fileManage {
   private static _instance = {}
-  public static getFile(file: string, config: configStructure): fileManage {
+  public static getFile(file: string, config: configStructure, basePath: string): fileManage {
     let fileCache: any = fileManage._instance;
     let fileObject: any = null;
     if (fileCache[file]) {
       fileObject = fileCache[file];
     } else {
-      fileObject = new fileManage(file, config);
+      fileObject = new fileManage(file, config, basePath);
       fileManage._instance[file] = fileObject;
     }
     return fileObject;
@@ -29,6 +29,8 @@ class fileManage {
   private originfile: string;
   /* 获取文件名 */
   private _fileName: string;
+  /* 基础路径 */
+  private basePath: string;
   get fileName(): string {
     return this._fileName;
   }
@@ -135,14 +137,18 @@ class fileManage {
       result = result.concat(cmdArray);
     }
     this._command = result;
-    if (cmdNode.file) {
-      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, varReplace);
+    this._file = path.relative(this.basePath, this.originfile);
+    if (cmdNode.type) {
+      let dirname = path.dirname(this._file);
+      let basename = path.basename(this._file, this.fileExt);
+      this._file = dirname + '/' + basename + '.' + cmdNode.type;
     }
   }
   /* 构造函数 */
-  constructor(file: string, config: configStructure) {
+  constructor(file: string, config: configStructure, basePath: string) {
     this.config = config;
     this.originfile = file;
+    this.basePath = basePath;
     this.parseFileExt();
     this.parseFileName();
     this.parseFilePath();

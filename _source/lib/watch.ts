@@ -140,7 +140,7 @@ class Watch {
     }
     /* 编译任务 */
     compileTask(file: string, reload: any): void {
-      let fileObject = fileManage.getFile(file, this.config);
+      let fileObject = fileManage.getFile(file, this.config, this.basePath);
       let command: Array<string> = fileObject.command;
       let fileName: string = fileObject.file;
       let workPath: string = '';
@@ -175,6 +175,7 @@ class Watch {
           if (workPath) {
             process.chdir(workPath);
           }
+          console.log("exec command:" + currCmd);
           exec(currCmd, execCallback);
         }
       }
