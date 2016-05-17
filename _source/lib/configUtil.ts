@@ -47,10 +47,10 @@ class configUtil {
     }
   }
   private static initConfig(options): any {
-    let configContent: string = '{\n  // 侦听的文件\n  "watchFile": ["*.jade", "*.sass", "*.ts"],\n  // 过滤\n  "ignore": ["^_", ".d.ts$"],\n  // 变量\n  "variable": { },\n  // 定义\n  "define": {\n    "jade/": {\n      // ~代表baseDir\n      // .代表当前\n      "path": "~",\n      ".jade": {\n        "command": [\n          "jade -Po ../ jade/#{fileName}.jade"\n        ]\n      }\n    },\n    ".sass": {\n      "file": "#{fileName}.css",\n      "command": "sass #{file} #{fileName}.css"\n    },\n    ".ls": {\n      "command": [\n        "lsc -cbp live/#{fileName}.ls>../js/#{fileName}.js"\n      ]\n    }\n  }\n}';
+    let configContent: string = '{\n  // 侦听的文件\n  "file": ["*.jade", "*.sass", "*.ls"],\n  // 过滤\n  "ignore": ["^_"],\n  // 变量\n  "variable": { },\n  // 定义\n  "define": {\n    ".jade": {\n      "type": "html",\n      "command": "jade -Po ./ #{fileName}.jade"\n    },\n    ".sass": {\n      "type": "css",\n      "command": "sass --sourcemap=none --style compact #{fileName}.sass ./#{fileName}.css"\n    },\n    ".ls": {\n      "type": "js",\n      "command": "lsc -cbp ./#{fileName}.ls>./#{fileName}.js"\n    }\n  },\n  "browserSync": {\n    "init": {\n      "server": {\n        "baseDir": "./"\n      },\n      "open": false\n    },\n    "reload": true\n  }\n}\n';
     let fileName = configUtil.defaultConfig
-    if (options.config) {
-      fileName = options.config;
+    if (options.init !== true) {
+      fileName = options.init;
     }
     try {
       fs.writeFileSync(fileName, configContent);
