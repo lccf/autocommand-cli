@@ -27,6 +27,7 @@ class fileManage {
   }
   config: configStructure;
   private originfile: string;
+  public originFileName: string;
   /* 获取文件名 */
   private _fileName: string;
   /* 基础路径 */
@@ -116,7 +117,7 @@ class fileManage {
         return fileName;
       }
       else if (b == 'relativePath') {
-        return relativePath;
+        return relativePath || '.';
       }
       else if (variable && variable[b]) {
         return variable[b];
@@ -137,11 +138,9 @@ class fileManage {
       result = result.concat(cmdArray);
     }
     this._command = result;
-    this._file = path.relative(this.basePath, this.originfile);
-    if (cmdNode.type) {
-      let dirname = path.dirname(this._file);
-      let basename = path.basename(this._file, this.fileExt);
-      this._file = dirname + '/' + basename + '.' + cmdNode.type;
+    this.originFileName = path.relative(this.basePath, this.originfile);
+    if (cmdNode.file) {
+      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, varReplace);
     }
   }
   /* 构造函数 */

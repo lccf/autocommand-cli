@@ -143,6 +143,7 @@ class Watch {
       let fileObject = fileManage.getFile(file, this.config, this.basePath);
       let command: Array<string> = fileObject.command;
       let fileName: string = fileObject.file;
+      let originFileName: string = fileObject.originFileName;
       let workPath: string = '';
       let basePath: string = this.basePath;
       var cmdIndex: number = -1;
@@ -152,7 +153,7 @@ class Watch {
           workPath = path.resolve(basePath, fileObject.cmdPath.substr(2));
         }
         // 当对于当前文件的工作路径计算
-        else if (fileObject !== '~') {
+        else if (fileObject.cmdPath !== '~') {
           workPath = path.resolve(fileObject.filePath, fileObject.cmdPath);
         }
       }
@@ -161,7 +162,10 @@ class Watch {
           process.chdir(basePath);
         }
         if (err == null && !stde) {
-          console.log("compiled "+fileName);
+          console.log("compiled "+(fileName || originFileName));
+          if (reload && fileName) {
+            reload(fileName);
+          }
         } else {
           console.error(err || stde);
         }
