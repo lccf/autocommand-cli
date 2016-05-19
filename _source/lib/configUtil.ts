@@ -92,7 +92,12 @@ class configUtil {
       this.initConfig(options);
     }
     else if (options.test) {
-      this.testAction(options.config || configUtil.defaultConfig);
+      if (options.test !== true) {
+        this.testAction(options.test);
+      }
+      else {
+        this.testAction(configUtil.defaultConfig);
+      }
     }
   }
 }
