@@ -140,7 +140,8 @@ class fileManage {
     this._command = result;
     this.originFileName = path.relative(this.basePath, this.originfile);
     if (cmdNode.file) {
-      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, varReplace);
+      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, varReplace)
+                    .replace(/^\.\//,'');
     }
   }
   /* 构造函数 */
