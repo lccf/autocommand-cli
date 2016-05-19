@@ -22,7 +22,7 @@ class Watch {
     }
     /* 主入口函数 */
     run(options: any): void {
-      let configFile = '_config';
+      let configFile = configUtil.defaultConfig;
       if (options.config && options.config != true) {
         configFile = options.config;
       }
@@ -81,17 +81,17 @@ class Watch {
           watchFile.push(path.resolve(this.basePath, file));
         }
         watchFile.push(this.configFile);
-        if (this.config.browserSync) {
+        if (config.browserSync) {
           if (!this.browserSync) {
-            this.browserSync = browserSync.create('autocommand-cli');
+            this.browserSync = browserSync.create();
           }
-          if (config.browserSync && config.browserSync.init) {
+          if (config.browserSync.init) {
             this.browserSync.init(config.browserSync.init);
           }
           else {
             this.browserSync.init();
           }
-          this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
+          this.watcher = this.browserSync.watch(watchFile).on('change', this.compileCallback.bind(this));
         }
         else {
           console.log('watch model，files:\n'+watchFile.join('\n'));
@@ -101,13 +101,13 @@ class Watch {
     }
     /* 停止监听 */
     stopWatch(): void {
+      if (this.watcher) {
+        this.watcher.close();
+        this.watcher = null;
+      }
       if(this.browserSync) {
         this.browserSync.exit();
         this.browserSync = null;
-      }
-      else if (this.watcher) {
-        this.watcher.close();
-        this.watcher = null;
       }
       fileManage.clear();
     }
