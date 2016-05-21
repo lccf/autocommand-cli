@@ -108,6 +108,9 @@ acmd watch
   }
 }
 ```
+- file键表示文件编译后的真实文件名，用来显示和发送给livereload函数
+- command可是以数组
+- file和command可是支持变量
 
 针对指定目录配置：
 ```javascript
