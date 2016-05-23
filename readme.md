@@ -109,7 +109,7 @@ acmd watch
 }
 ```
 - file键表示文件编译后的真实文件名，用来显示和发送给livereload函数
-- command可是以数组
+- command代表要执行的命令，可以用数组传入多个命令
 - file和command可是支持变量
 
 针对指定目录配置：
@@ -142,11 +142,15 @@ acmd watch
     "ignore": "^_"
 }
 ```
-以为上过滤以_打头的文件。
+以为上过滤以_打头的文件名，可以用数组传入多个过滤规则
 
 ### variable
 自义变量，在command，file等选项中使用#{variableName}的形式使用
 * 可选
+默认支持以下变量：
+- file 表示当前文件
+- fileName 表示当前文件名(不包含扩展名)
+- relativePath 当前文件相对于项目根目录的路径
 
 ### browserSync
 配置使用browserSync
