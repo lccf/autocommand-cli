@@ -2,7 +2,7 @@
   "name": "autocommand-cli",
   "version": "0.1.0",
   "description": "autocommand command-line interface",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

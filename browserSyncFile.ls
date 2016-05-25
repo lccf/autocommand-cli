@@ -47,7 +47,7 @@ getCompileCmdAndFileName = (file, ext) ->
       cmd = "tsc -m commonjs --outDir #baseDir/lib #file"
     default
       compileFileName = "#{filename}.js"
-      cmd = "tsc #file"
+      cmd = "tsc -m commonjs --outDir #baseDir #file"
   default
     compileFileName = cmd = ''
 
