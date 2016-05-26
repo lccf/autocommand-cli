@@ -17,11 +17,19 @@ class Watch {
     basePath: string;
     browserSync: any;
     watcher: any;
+
+    callModel(config: configStructure): any {
+      this.config = config;
+      this.basePath = process.cwd();
+      return this;
+    }
+
     compile(): void {
       this.run({compile: true});
     }
     /* 主入口函数 */
     run(options: any): void {
+      if (!options.mode)
       let configFile = configUtil.defaultConfig;
       if (options.config && options.config != true) {
         configFile = options.config;
