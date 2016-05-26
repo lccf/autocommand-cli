@@ -166,9 +166,6 @@ class Watch {
         }
       }
       let execCallback: any = function (err, stdo, stde) {
-        if (workPath) {
-          process.chdir(basePath);
-        }
         if (err == null && !stde) {
           console.log("compiled "+(fileName || originFileName));
           if (reload && fileName) {
@@ -184,11 +181,13 @@ class Watch {
           cmdIndex = -1;
         }
         if (currCmd) {
-          if (workPath) {
-            process.chdir(workPath);
-          }
           console.log("exec command:" + currCmd);
-          exec(currCmd, execCallback);
+          if (workPath) {
+            exec(currCmd, {cwd: workPath}, execCallback);
+          }
+          else {
+            exec(currCmd, execCallback);
+          }
         }
       }
       execCmd();
