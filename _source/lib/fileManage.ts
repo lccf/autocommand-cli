@@ -80,6 +80,7 @@ class fileManage {
     let file: string = this.originfile;
     let fileName: string = this.fileName;
     let filePath: string = this.filePath;
+    let basePath: string = this.basePath;
     let ext: string = this.fileExt;
     let relativePath: string = path.relative(process.cwd(), filePath);
 
@@ -120,7 +121,8 @@ class fileManage {
         return relativePath || '.';
       }
       else if (variable && variable[b]) {
-        return variable[b];
+        /* ~替换为basePath路径 */
+        return variable[b].replace(/^~\//, basePath+'/');
       }
       else {
         return a;
