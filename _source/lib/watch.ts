@@ -154,6 +154,7 @@ class Watch {
       let originFileName: string = fileObject.originFileName;
       let workPath: string = '';
       let basePath: string = this.basePath;
+      let environment: any = null;
       var cmdIndex: number = -1;
       if (fileObject.cmdPath) {
         // 相对于当前配置文件的工作路径计算
@@ -165,6 +166,58 @@ class Watch {
           workPath = path.resolve(fileObject.filePath, fileObject.cmdPath);
         }
       }
+      /**
+       * 计算环境变量
+       */
+      let varReplace: any = function(a, b) {
+        if (b == 'file') {
+          return this.file;
+        }
+        else if (b == 'fileName') {
+          return this.fileName;
+        }
+        else if (b == 'relativePath') {
+          return this.relativePath || '.';
+        }
+        else if (this.variable && this.variable[b]) {
+          /* ~替换为basePath路径 */
+          return this.variable[b].replace(/^~\//, this.basePath+'/');
+        }
+        else {
+          return a;
+        }
+      }
+      /**
+       * 计算环境变量
+       */
+      if (this.config.environment) {
+        let variableHandler = {
+          file: fileObject.file,
+          fileName: fileObject.fileName,
+          basePath: this.basePath,
+          relativePath: path.relative(this.basePath, fileObject.filePath),
+          variable: this.config.variable
+        }
+        environment = Object.assign({}, process.env);
+        for (let key in this.config.environment) {
+          let value = [].concat(this.config.environment[key]);
+          value = value.map(function(item) {
+            item = item.replace(/\#\{([^}]+)\}/g, varReplace.bind(variableHandler));
+            return item;
+          });
+          value = value.join(path.delimiter);
+          if (key.charAt(0) == ':') {
+            let realKey = key.substr(1)
+            environment[realKey] = value + path.delimiter + environment[realKey];
+          }
+          else {
+            environment[key] = value;
+          }
+        }
+      }
+      /**
+       * 执行命令的回调
+       */
       let execCallback: any = function (err, stdo, stde) {
         if (err == null && !stde) {
           console.log("compiled "+(fileName || originFileName));
@@ -175,6 +228,9 @@ class Watch {
           console.error(err || stde);
         }
       }
+      /**
+       * 执行命令
+       */
       let execCmd: any = function () {
         let currCmd: string = command[++cmdIndex];
         if (command.length <= cmdIndex + 1) {
@@ -182,8 +238,16 @@ class Watch {
         }
         if (currCmd) {
           console.log("exec command:" + currCmd);
+          let execOptions = {}
           if (workPath) {
-            exec(currCmd, {cwd: workPath}, execCallback);
+            execOptions.cwd = workPath
+            console.log(execOptions);
+          }
+          if (environment) {
+            execOptions.env = environment
+          }
+          if (workPath || environment) {
+            exec(currCmd, execOptions, execCallback);
           }
           else {
             exec(currCmd, execCallback);
