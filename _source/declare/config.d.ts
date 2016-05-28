@@ -1,14 +1,22 @@
 import browserSync = require('browser-sync');
 
+type StringOrStringArray = string | Array<string>;
+
 interface bSyncConfigStructure {
   init: browserSync.Options,
   reload: Boolean
 }
 
-export interface configStructure {
+interface defineStructure {
   file: string,
-  ignore: Array<string|any>,
-  variable: any,
-  define: any,
+  command: StringOrStringArray
+}
+
+export default interface configStructure {
+  file: StringOrStringArray,
+  ignore?: StringOrStringArray,
+  variable?: any,
+  define: defineStructure,
+  environment?: any,
   browserSync?: bSyncConfigStructure
 }
