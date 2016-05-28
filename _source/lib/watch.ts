@@ -169,27 +169,6 @@ class Watch {
       /**
        * 计算环境变量
        */
-      let varReplace: any = function(a, b) {
-        if (b == 'file') {
-          return this.file;
-        }
-        else if (b == 'fileName') {
-          return this.fileName;
-        }
-        else if (b == 'relativePath') {
-          return this.relativePath || '.';
-        }
-        else if (this.variable && this.variable[b]) {
-          /* ~替换为basePath路径 */
-          return this.variable[b].replace(/^~\//, this.basePath+'/');
-        }
-        else {
-          return a;
-        }
-      }
-      /**
-       * 计算环境变量
-       */
       if (this.config.environment) {
         let variableHandler = {
           file: fileObject.file,
@@ -202,14 +181,16 @@ class Watch {
         for (let key in this.config.environment) {
           let value = [].concat(this.config.environment[key]);
           value = value.map(function(item) {
-            item = item.replace(/\#\{([^}]+)\}/g, varReplace.bind(variableHandler));
+            item = item.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableHandler));
             return item;
           });
           value = value.join(path.delimiter);
+          // 如果是以:开头的，则使用追加模式
           if (key.charAt(0) == ':') {
             let realKey = key.substr(1)
             environment[realKey] = value + path.delimiter + environment[realKey];
           }
+          // 否则替换
           else {
             environment[key] = value;
           }

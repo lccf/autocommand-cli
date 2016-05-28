@@ -128,13 +128,20 @@ class fileManage {
         return a;
       }
     }
+    let variableHandler = {
+      file: file,
+      fileName: fileName,
+      basePath: basePath,
+      relativePath: relativePath,
+      variable: variable
+    }
 
     let cmdNode: any = pathNode[ext];
     if (cmdNode) {
       cmdArray = [].concat(cmdNode.command);
       for(var i=0, j = cmdArray.length; i<j; i++) {
         let item: string = cmdArray[i];
-        item = item.replace(/\#\{([^}]+)\}/g, varReplace);
+        item = item.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableHandler));
         cmdArray[i] = item;
       }
       result = result.concat(cmdArray);
@@ -142,7 +149,7 @@ class fileManage {
     this._command = result;
     this.originFileName = path.relative(this.basePath, this.originfile);
     if (cmdNode.file) {
-      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, varReplace)
+      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableHandler))
                     .replace(/^\.\//,'');
     }
   }
