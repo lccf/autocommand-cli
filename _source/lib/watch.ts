@@ -170,18 +170,18 @@ class Watch {
        * 计算环境变量
        */
       if (this.config.environment) {
-        let variableHandler = {
+        let variableContext = {
           file: fileObject.file,
           fileName: fileObject.fileName,
-          basePath: this.basePath,
-          relativePath: path.relative(this.basePath, fileObject.filePath),
+          basePath: basePath,
+          relativePath: path.relative(basePath, fileObject.filePath),
           variable: this.config.variable
         }
         environment = Object.assign({}, process.env);
         for (let key in this.config.environment) {
           let value = [].concat(this.config.environment[key]);
           value = value.map(function(item) {
-            item = item.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableHandler));
+            item = item.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableContext));
             return item;
           });
           value = value.join(path.delimiter);

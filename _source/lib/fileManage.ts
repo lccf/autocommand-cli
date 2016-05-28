@@ -80,11 +80,8 @@ class fileManage {
     let file: string = this.originfile;
     let fileName: string = this.fileName;
     let filePath: string = this.filePath;
-    let basePath: string = this.basePath;
     let ext: string = this.fileExt;
     let relativePath: string = path.relative(process.cwd(), filePath);
-
-    // result.push(file)
 
     if (path.sep != '/') {
       relativePath = relativePath.replace('\\', '/');
@@ -95,7 +92,7 @@ class fileManage {
     let cmdDefine: any = config.define;
     let pathNode: any = false;
     let cmdArray: Array<string> = [];
-    let variable: any = config.variable;
+
     if (cmdDefine[relativePath]) {
       pathNode = cmdDefine[relativePath];
     }
@@ -110,30 +107,12 @@ class fileManage {
       this._cmdPath = pathNode.path;
     }
 
-    let varReplace: any = function(a, b) {
-      if (b == 'file') {
-        return file;
-      }
-      else if (b == 'fileName') {
-        return fileName;
-      }
-      else if (b == 'relativePath') {
-        return relativePath || '.';
-      }
-      else if (variable && variable[b]) {
-        /* ~替换为basePath路径 */
-        return variable[b].replace(/^~\//, basePath+'/');
-      }
-      else {
-        return a;
-      }
-    }
-    let variableHandler = {
+    let variableContext = {
       file: file,
       fileName: fileName,
-      basePath: basePath,
+      basePath: this.basePath,
       relativePath: relativePath,
-      variable: variable
+      variable: config.variable
     }
 
     let cmdNode: any = pathNode[ext];
@@ -141,7 +120,7 @@ class fileManage {
       cmdArray = [].concat(cmdNode.command);
       for(var i=0, j = cmdArray.length; i<j; i++) {
         let item: string = cmdArray[i];
-        item = item.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableHandler));
+        item = item.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableContext));
         cmdArray[i] = item;
       }
       result = result.concat(cmdArray);
@@ -149,7 +128,7 @@ class fileManage {
     this._command = result;
     this.originFileName = path.relative(this.basePath, this.originfile);
     if (cmdNode.file) {
-      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableHandler))
+      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableContext))
                     .replace(/^\.\//,'');
     }
   }
