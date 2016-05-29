@@ -3,20 +3,20 @@ import browserSync = require('browser-sync');
 type StringOrStringArray = string | Array<string>;
 
 interface bSyncConfigStructure {
-  init: browserSync.Options,
-  reload: Boolean
+  init: browserSync.Options;
+  reload: Boolean;
 }
 
 interface defineStructure {
-  file: string,
-  command: StringOrStringArray
+  file: string;
+  command: StringOrStringArray;
 }
 
 export default interface configStructure {
-  file: StringOrStringArray,
-  ignore?: StringOrStringArray,
-  variable?: any,
-  define: defineStructure,
-  environment?: any,
-  browserSync?: bSyncConfigStructure
+  file: StringOrStringArray;
+  define: defineStructure;
+  ignore?: StringOrStringArray;
+  variable?: any;
+  environment?: any;
+  browserSync?: bSyncConfigStructure;
 }

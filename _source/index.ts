@@ -1,6 +1,6 @@
 /// <reference path="../typings/main"/>
 
-import {configStructure} from './declare/config'
+import configStructure from './declare/config'
 import watchAction from './lib/watch'
 
 class Autocommand {
