@@ -10,10 +10,11 @@ import fileManage from './fileManage';
 import configUtil from './configUtil';
 import configStructure from '../declare/config';
 
+import AutocommandBase from './AutocommandBase';
 
 let exec = child_process.exec;
 
-class Watch {
+class Watch extends AutocommandBase {
     config: configStructure;
     configFile: string;
     basePath: string;
@@ -31,8 +32,7 @@ class Watch {
     }
     /* 主入口函数 */
     run(options: any): void {
-      if (!options.mode)
-      let configFile = configUtil.defaultConfig;
+      let configFile: string = configUtil.defaultConfig;
       if (options.config && options.config != true) {
         configFile = options.config;
       }
@@ -182,19 +182,18 @@ class Watch {
         environment = Object.assign({}, process.env);
         for (let key in this.config.environment) {
           let value = [].concat(this.config.environment[key]);
-          value = value.map(function(item) {
-            item = item.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableContext));
-            return item;
+          value = value.map((item) => {
+            return this.replaceVariable(item, variableContext);
           });
-          value = value.join(path.delimiter);
+          let envValue = value.join(path.delimiter);
           // 如果是以:开头的，则使用追加模式
           if (key.charAt(0) == ':') {
             let realKey = key.substr(1)
-            environment[realKey] = value + path.delimiter + environment[realKey];
+            environment[realKey] = envValue + path.delimiter + environment[realKey];
           }
           // 否则替换
           else {
-            environment[key] = value;
+            environment[key] = envValue;
           }
         }
       }
@@ -221,10 +220,9 @@ class Watch {
         }
         if (currCmd) {
           console.log("exec command:" + currCmd);
-          let execOptions = {}
+          let execOptions: any = {};
           if (workPath) {
             execOptions.cwd = workPath
-            console.log(execOptions);
           }
           if (environment) {
             execOptions.env = environment

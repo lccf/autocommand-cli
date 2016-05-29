@@ -100,27 +100,4 @@ export default class configUtil {
       }
     }
   }
-  /**
-   * 替换环境变量
-   */
-  public static variableReplace(origin: string, variableName: string): string {
-    let ret = origin;
-    switch(variableName) {
-      case 'file':
-        ret = this.file;
-        break;
-      case 'fileName':
-        ret = this.fileName;
-        break;
-      case 'relativePath':
-        ret = this.relativePath || '.';
-        break;
-      default:
-        if (this.variable && this.variable[variableName]) {
-          ret = this.variable[variableName].replace(/^~\//, this.basePath+'/');
-        }
-        break;
-    }
-    return ret;
-  }
 }

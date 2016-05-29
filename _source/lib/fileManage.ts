@@ -1,9 +1,10 @@
 /// <reference path="../../typings/main.d.ts" />
 /// <reference path="../declare/main.d.ts" />
 import path = require('path');
+import AutocommandBase from './AutocommandBase';
 import configStructure from '../declare/config';
 
-class fileManage {
+export default class fileManage extends AutocommandBase {
   private static _instance = {}
   public static getFile(file: string, config: configStructure, basePath: string): fileManage {
     let fileCache: any = fileManage._instance;
@@ -113,26 +114,23 @@ class fileManage {
       relativePath: relativePath,
       variable: config.variable
     }
-
     let cmdNode: any = pathNode[ext];
     if (cmdNode) {
       cmdArray = [].concat(cmdNode.command);
-      for(var i=0, j = cmdArray.length; i<j; i++) {
-        let item: string = cmdArray[i];
-        item = item.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableContext));
-        cmdArray[i] = item;
-      }
+      cmdArray = cmdArray.map((item) => {
+        return this.replaceVariable(item, variableContext);
+      })
       result = result.concat(cmdArray);
     }
     this._command = result;
     this.originFileName = path.relative(this.basePath, this.originfile);
     if (cmdNode.file) {
-      this._file = cmdNode.file.replace(/\#\{([^}]+)\}/g, configUtil.variableReplace.bind(variableContext))
-                    .replace(/^\.\//,'');
+      this._file = this.replaceVariable(cmdNode.file, variableContext).replace(/^\.\//,'');
     }
   }
   /* 构造函数 */
   constructor(file: string, config: configStructure, basePath: string) {
+    super(file, config, basePath);
     this.config = config;
     this.originfile = file;
     this.basePath = basePath;
