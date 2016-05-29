@@ -1,8 +1,7 @@
 /// <reference path="../../typings/main.d.ts" />
 /// <reference path="../declare/main.d.ts" />
 import path = require('path');
-let configUtil:any = require('./configUtil.js');
-import {configStructure} from "../declare/config";
+import configStructure from '../declare/config';
 
 class fileManage {
   private static _instance = {}
@@ -143,5 +142,3 @@ class fileManage {
     this.parseFileCommand();
   }
 }
-
-module.exports = fileManage;

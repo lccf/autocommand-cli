@@ -44,10 +44,10 @@ getCompileCmdAndFileName = (file, ext) ->
     switch relativePath
     case '_source/lib'
       compileFileName = "#baseDir/lib/#{filename}.js"
-      cmd = "tsc -m commonjs --outDir #baseDir/lib #file"
+      cmd = "tsc -t es5 --outDir #baseDir/lib #file"
     default
       compileFileName = "#{filename}.js"
-      cmd = "tsc -m commonjs --outDir #baseDir #file"
+      cmd = "tsc -t es5 --outDir #baseDir #file"
   default
     compileFileName = cmd = ''
 

@@ -2,10 +2,11 @@
 /// <reference path="../declare/main.d.ts" />
 let program:commander.IExportedCommand = require('commander');
 let pkg:any = require('../package.json');
-let watchAction:any = require('./watch.js');
-let configUtil:any = require('./configUtil');
 
-module.exports = function (args:string[]):void {
+import watchAction from './watch';
+import configUtil from './configUtil';
+
+export default function (args:string[]):void {
     program.version(pkg.version);
 
     program.command('watch', '')

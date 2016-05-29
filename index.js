@@ -7,11 +7,11 @@ var Autocommand = (function () {
     Autocommand.create = function () {
     };
     Autocommand.prototype.watch = function (config) {
-        watch_1["default"].callModel(config).startWatch();
+        watch_1.default.callModel(config).startWatch();
         return this;
     };
     Autocommand.prototype.run = function (config) {
-        watch_1["default"].callModel(config).runCommand();
+        watch_1.default.callModel(config).runCommand();
         return this;
     };
     return Autocommand;

@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-
-var path = require('path'),
-    fs   = require('fs'),
-    lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
-
-require(lib + '/command')(process.argv);
+"use strict";
+var command_1 = require('../lib/command');
+command_1.default(process.argv);

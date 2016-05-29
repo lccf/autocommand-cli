@@ -1,8 +1,8 @@
 /// <reference path="../../typings/main" />
 import fs = require('fs');
-import {configStructure} from "../declare/config";
+import configStructure from '../declare/config';
 
-class configUtil {
+export default class configUtil {
   public static defaultConfig = '_config';
   private static _instance: any = {};
   /**
@@ -124,5 +124,3 @@ class configUtil {
     return ret;
   }
 }
-
-module.exports = configUtil;

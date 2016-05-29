@@ -1,13 +1,15 @@
 /// <reference path="../../typings/main.d.ts"/>
 
-let configUtil: any = require('./configUtil.js');
-let fileManage: any = require('./fileManage.js');
 import path = require('path');
 import child_process = require('child_process');
 import browserSync = require('browser-sync');
 import chokidar = require('chokidar');
-import {configStructure} from "../declare/config";
-let glob = require('glob');
+import glob = require('glob');
+
+import fileManage from './fileManage';
+import configUtil from './configUtil';
+import configStructure from '../declare/config';
+
 
 let exec = child_process.exec;
 
@@ -252,5 +254,4 @@ class Watch {
       }
     }
 }
-
-module.exports = new Watch();
+export default new Watch();
