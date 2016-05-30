@@ -147,10 +147,34 @@ acmd watch
 ### variable
 自义变量，在command，file等选项中使用#{variableName}的形式使用
 * 可选
-默认支持以下变量：
+在command，file中默认支持以下变量：
 - file 表示当前文件
 - fileName 表示当前文件名(不包含扩展名)
 - relativePath 当前文件相对于项目根目录的路径
+
+* 在variable中定义的变量使用~表示项目当前路径
+
+### environment
+环境变量，用来改变执行命令时的环境变量。为key/value形式的定义默认会覆盖同名环境变量。
+示例：
+```javascript
+{
+  "environment": {
+    "PATH": "./abc"
+  }
+}
+// 修改后的环境变量为 ./abc
+```
+当key以:开头，表示去merge一个环境变量。环境变量为数组时，使用系统环境变量分隔符去join。
+示例:
+```javascript
+{
+  "environment": {
+    ":PATH": ["./abc", "./def"]
+  }
+}
+// 修改后的环境变量为 ./abc:./def:$PATH(:在windows下为;)
+```
 
 ### browserSync
 配置使用browserSync
