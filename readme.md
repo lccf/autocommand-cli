@@ -40,30 +40,37 @@ acmd watch
   // 侦听的文件
   "file": ["**/*.jade", "*.sass", "*.ls"],
   // 过滤
-  "ignore": ["^_"],
+  "ignore": ["_*", "node_modules/"],
   // 变量
-  "variable": { },
+  "variable": {
+    "LocalBin": "~/node_modules/.bin"
+  },
+  // 环境变量
+  "environment": {
+    ":PATH": "#{LocalBin}"
+  },
   // 定义
   "define": {
     ".jade": {
-      "file": "#{fileName}.html",
-      "command": "jade -Po ./ #{fileName}.jade"
+      "file": "#{relativePath}/#{fileName}.html",
+      "command": "pug -Po . #{file}"
     },
     ".sass": {
-      "command": "sass --sourcemap=none --style compact #{fileName}.sass ./#{fileName}.css"
+      "file": "#{relativePath}/#{fileName}.html",
+      "command": "node-sass --output-style compact #{fileName}.sass ./#{fileName}.css"
     },
     ".ls": {
-      "file": "#{fileName}.js",
+      "file": "#{relativePath}/#{fileName}.js",
       "command": "lsc -cbp ./#{fileName}.ls>./#{fileName}.js"
     },
     // 嵌套目录
     "jade/": {
       // ~代表baseDir
       // .代表当前
-      "path": "~",
+      "path": ".",
       ".jade": {
-        "file": "#{fileName}.html",
-        "command": "jade -Po ./ jade/#{fileName}.jade"
+        "file": "#{relativePath}/#{fileName}.html",
+        "command": "pug -Po . #{file}"
       }
     }
   },
@@ -80,6 +87,7 @@ acmd watch
     "reload": true
   }
 }
+// vim: se sw=2 ts=2 sts=2 ft=javascript et:
 ```
 
 ### file
@@ -133,16 +141,16 @@ acmd watch
 
 
 ### ignore
-根据指定规则过滤文件，默认为正则表达式
+根据指定规则过滤文件，参见[ignore](https://www.npmjs.com/package/ignore)
 * 可选
 
 示例：
 ```javascript
 {
-    "ignore": "^_"
+    "ignore": ["_*", "node_modules/"]
 }
 ```
-以为上过滤以_打头的文件名，可以用数组传入多个过滤规则
+过滤以_开头的文件，过滤node_modules目录中的文件。
 
 ### variable
 自义变量，在command，file等选项中使用#{variableName}的形式使用

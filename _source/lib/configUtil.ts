@@ -47,7 +47,58 @@ export default class configUtil {
     }
   }
   private static initConfig(options): any {
-    let configContent: string = '{\n  // 侦听文件\n  "file": ["**/*.jade", "*.sass", "*.ls"],\n  // 过滤\n  "ignore": ["^_"],\n  // 变量\n  "variable": { },\n  // 定义\n  "define": {\n    ".jade": {\n      "file": "#{fileName}.html",\n      "command": "jade -Po ./ #{fileName}.jade"\n    },\n    ".sass": {\n      "command": "sass --sourcemap=none --style compact #{fileName}.sass ./#{fileName}.css"\n    },\n    ".ls": {\n      "file": "#{fileName}.js",\n      "command": "lsc -cbp ./#{fileName}.ls>./#{fileName}.js"\n    },\n    // 嵌套目录\n    "jade/": {\n      // ~代表baseDir\n      // .代表当前\n      "path": "~",\n      ".jade": {\n        "file": "#{fileName}.html",\n        "command": "jade -Po ./ jade/#{fileName}.jade"\n      }\n    }\n  },\n  // browserSync配置\n  "browserSync": {\n    // 初始化配置\n    "init": {\n      "server": {\n        "baseDir": "./"\n      },\n      "open": false\n    },\n    // 启动livereload\n    "reload": true\n  }\n}\n';
+    let configContent: string = `{
+  // 侦听的文件
+  "file": ["**/*.jade", "*.sass", "*.ls"],
+  // 过滤
+  "ignore": ["_*", "node_modules/"],
+  // 变量
+  "variable": {
+    "LocalBin": "~/node_modules/.bin"
+  },
+  // 环境变量
+  "environment": {
+    ":PATH": "#{LocalBin}"
+  },
+  // 定义
+  "define": {
+    ".jade": {
+      "file": "#{relativePath}/#{fileName}.html",
+      "command": "pug -Po . #{file}"
+    },
+    ".sass": {
+      "file": "#{relativePath}/#{fileName}.html",
+      "command": "node-sass --output-style compact #{fileName}.sass ./#{fileName}.css"
+    },
+    ".ls": {
+      "file": "#{relativePath}/#{fileName}.js",
+      "command": "lsc -cbp ./#{fileName}.ls>./#{fileName}.js"
+    },
+    // 嵌套目录
+    "jade/": {
+      // ~代表baseDir
+      // .代表当前
+      "path": ".",
+      ".jade": {
+        "file": "#{relativePath}/#{fileName}.html",
+        "command": "pug -Po . #{file}"
+      }
+    }
+  },
+  // browserSync配置
+  "browserSync": {
+    // 初始化配置
+    "init": {
+      "server": {
+        "baseDir": "./"
+      },
+      "open": false
+    },
+    // 启动livereload
+    "reload": true
+  }
+}
+// vim: se sw=2 ts=2 sts=2 ft=javascript et:`
     let fileName = configUtil.defaultConfig
     if (options.init !== true) {
       fileName = options.init;
