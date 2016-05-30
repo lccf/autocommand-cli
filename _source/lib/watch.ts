@@ -5,6 +5,7 @@ import child_process = require('child_process');
 import browserSync = require('browser-sync');
 import chokidar = require('chokidar');
 import glob = require('glob');
+import ignore = require('ignore');
 
 import fileManage from './fileManage';
 import configUtil from './configUtil';
@@ -76,6 +77,7 @@ class Watch extends AutocommandBase {
           let file = glob.sync(item);
           fileList = fileList.concat(file);
         }
+        fileList = this.checkIgnore(fileList);
         console.log('find files:\n'+fileList.join('\n'));
         fileList.map(this.compileCallback.bind(this));
       }
@@ -135,18 +137,13 @@ class Watch extends AutocommandBase {
       }
     }
     /* 检测忽略 */
-    checkIgnore(file: string): boolean {
-      let filename: string = path.basename(file);
-      let allow: boolean = true;
-      let ignore = this.config.ignore;
-      for (let item of ignore) {
-        let match: RegExp = new RegExp(item);
-        if (match.exec(filename)) {
-          allow = false;
-          break;
-        }
+    checkIgnore(file: any): any {
+      let ignoreRules = [].concat(this.config.ignore);
+      let ig = ignore().add(ignoreRules);
+      let result = ig.filter(file);
+      if (result && result.length) {
+        return result;
       }
-      return allow;
     }
     /* 编译任务 */
     compileTask(file: string, reload: any): void {
@@ -245,7 +242,7 @@ class Watch extends AutocommandBase {
         }
       }
       else {
-        if (this.checkIgnore(file) != true) {
+        if (!this.checkIgnore(file)) {
           return;
         }
         this.compileTask(file, this.browserSync && this.config.browserSync.reload ? this.browserSync.reload : null);

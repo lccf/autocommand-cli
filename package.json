@@ -2,7 +2,7 @@
   "name": "autocommand-cli",
   "version": "0.1.0",
   "description": "autocommand command-line interface",
-  "main": "./lib/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +18,7 @@
     "chokidar": "^1.4.3",
     "commander": "^2.9.0",
     "glob": "^7.0.3",
-    "node-notifier": "^4.5.0"
+    "ignore": "^3.1.2"
   },
   "bin": {
     "acmd": "./bin/acmd"

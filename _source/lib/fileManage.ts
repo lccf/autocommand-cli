@@ -25,7 +25,7 @@ export default class fileManage extends AutocommandBase {
     fileCache = {}
     fileManage._instance = fileCache;
   }
-  config: configStructure;
+  public config: configStructure;
   private originfile: string;
   public originFileName: string;
   /* 获取文件名 */
@@ -130,6 +130,7 @@ export default class fileManage extends AutocommandBase {
   }
   /* 构造函数 */
   constructor(file: string, config: configStructure, basePath: string) {
+    super();
     this.config = config;
     this.originfile = file;
     this.basePath = basePath;
