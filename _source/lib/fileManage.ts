@@ -130,7 +130,6 @@ export default class fileManage extends AutocommandBase {
   }
   /* 构造函数 */
   constructor(file: string, config: configStructure, basePath: string) {
-    super(file, config, basePath);
     this.config = config;
     this.originfile = file;
     this.basePath = basePath;

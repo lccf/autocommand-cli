@@ -181,19 +181,19 @@ class Watch extends AutocommandBase {
         }
         environment = Object.assign({}, process.env);
         for (let key in this.config.environment) {
-          let value = [].concat(this.config.environment[key]);
+          let value: any = [].concat(this.config.environment[key]);
           value = value.map((item) => {
             return this.replaceVariable(item, variableContext);
           });
-          let envValue = value.join(path.delimiter);
+          value = value.join(path.delimiter);
           // 如果是以:开头的，则使用追加模式
           if (key.charAt(0) == ':') {
             let realKey = key.substr(1)
-            environment[realKey] = envValue + path.delimiter + environment[realKey];
+            environment[realKey] = value + path.delimiter + environment[realKey];
           }
           // 否则替换
           else {
-            environment[key] = envValue;
+            environment[key] = value;
           }
         }
       }

@@ -1,11 +1,3 @@
-interface contextStructure {
-  file: string;
-  fileName: string;
-  basePath: string;
-  relativePath: string;
-  variable: any;
-}
-
 export default class AutocommandBase {
 
   replaceVariable(allText: string, context: any, match: RegExp = /\#\{([^}]+)\}/g): string {
@@ -14,7 +6,7 @@ export default class AutocommandBase {
 
   static replaceVariableHandler(allText: string, variableName: string): string {
     let result = allText;
-    let context: contextStructure = this;
+    let context: any = this;
     switch(variableName) {
       case 'file':
         result = context.file;
