@@ -86,27 +86,33 @@ export default class fileManage extends AutocommandBase {
     if (path.sep != '/') {
       relativePath = relativePath.replace('\\', '/');
       file = file.replace('\\', '/');
-
     }
 
     let cmdDefine: any = config.define;
     let pathNode: any = false;
     let cmdArray: Array<string> = [];
-
-    if (cmdDefine[relativePath]) {
-      pathNode = cmdDefine[relativePath];
+    // 循环检测目录
+    let definePath = relativePath;
+    while(definePath != '.') {
+      if (cmdDefine[definePath+'/'] && cmdDefine[definePath+'/'][ext]) {
+        pathNode = cmdDefine[definePath+'/'];
+        break;
+      }
+      currPath = path.dirname(currPath);
     }
-    else if (cmdDefine[relativePath+'/']) {
-      pathNode = cmdDefine[relativePath+'/'];
-
-    }
-    else {
+    if (!pathNode && cmdDefine[ext]) {
       pathNode = cmdDefine;
     }
+    // 如果未找到相关定义
+    if (!pathNode) {
+      return;
+    }
+
     if (pathNode.path) {
       this._cmdPath = pathNode.path;
     }
 
+    let cmdNode: any = pathNode[ext];
     let variableContext = {
       file: file,
       fileName: fileName,
@@ -114,7 +120,6 @@ export default class fileManage extends AutocommandBase {
       relativePath: relativePath,
       variable: config.variable
     }
-    let cmdNode: any = pathNode[ext];
     if (cmdNode) {
       cmdArray = [].concat(cmdNode.command);
       cmdArray = cmdArray.map((item) => {
