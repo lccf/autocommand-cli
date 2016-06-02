@@ -149,6 +149,10 @@ class Watch extends AutocommandBase {
     compileTask(file: string, reload: any): void {
       let fileObject = fileManage.getFile(file, this.config, this.basePath);
       let command: Array<string> = fileObject.command;
+      if (!command.length) {
+        console.error("command not define");
+        return;
+      }
       let fileName: string = fileObject.file;
       let originFileName: string = fileObject.originFileName;
       let workPath: string = '';
