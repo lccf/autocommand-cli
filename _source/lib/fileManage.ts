@@ -98,7 +98,7 @@ export default class fileManage extends AutocommandBase {
         pathNode = cmdDefine[definePath+'/'];
         break;
       }
-      currPath = path.dirname(currPath);
+      definePath = path.dirname(definePath);
     }
     if (!pathNode && cmdDefine[ext]) {
       pathNode = cmdDefine;
