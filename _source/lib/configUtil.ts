@@ -1,5 +1,6 @@
 /// <reference path="../../typings/main" />
 import fs = require('fs');
+import hjson = require('hjson');
 import configStructure from '../declare/config';
 
 export default class configUtil {
@@ -32,9 +33,8 @@ export default class configUtil {
     }
     if (fs.existsSync(configFile)) {
       let configContent: string = fs.readFileSync(configFile, 'utf-8');
-      configContent = configContent.replace(/\s*\/\/.*/g, '').replace(/\s*\/\*.*\*\//g, '');
       try {
-        result = JSON.parse(configContent);
+        result = hjson.parse(configContent);
         return result;
       }
       catch(e) {
