@@ -84,8 +84,8 @@ export default class fileManage extends AutocommandBase {
     let relativePath: string = path.relative(process.cwd(), filePath);
 
     if (path.sep != '/') {
-      relativePath = relativePath.replace('\\', '/');
-      file = file.replace('\\', '/');
+      relativePath = relativePath.replace(/\\/g, '/');
+      file = file.replace(/\\/g, '/');
     }
 
     let cmdDefine: any = config.define;
