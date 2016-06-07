@@ -159,7 +159,7 @@ class Watch extends AutocommandBase {
       let environment: any = null;
       var cmdIndex: number = -1;
       if (!(command && command.length)) {
-        console.log('command not define! file:'+fileObject);
+        console.log('command not define! file:'+file);
         return;
       }
       if (fileObject.cmdPath) {
