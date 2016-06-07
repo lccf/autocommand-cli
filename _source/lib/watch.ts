@@ -181,6 +181,8 @@ class Watch extends AutocommandBase {
           fileName: fileObject.fileName,
           basePath: basePath,
           relativePath: path.relative(basePath, fileObject.filePath),
+          definePath: fileObject.definePath,
+          defineRelativePath: fileObject.defineRelativePath,
           variable: this.config.variable
         }
         environment = Object.assign({}, process.env);

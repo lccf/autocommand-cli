@@ -5,23 +5,14 @@ export default class AutocommandBase {
   }
 
   static replaceVariableHandler(allText: string, variableName: string): string {
-    let result = allText;
+    let result: string = allText;
     let context: any = this;
-    switch(variableName) {
-      case 'file':
-        result = context.file;
-        break;
-      case 'fileName':
-        result = context.fileName;
-        break;
-      case 'relativePath':
-        result = context.relativePath || '.';
-        break;
-      default:
-        if (context.variable && context.variable[variableName]) {
-          result = context.variable[variableName].replace(/^~\//, context.basePath+'/');
-        }
-        break;
+    let allowName: Array<string> = ['file', 'fileName', 'basePath', 'relativePath', 'definePath', 'defineRelativePath'];
+      if (allowName.indexOf(variableName) >= 0 && context[variableName]) {
+      result = context[variableName];
+    }
+    else if (context.variable && context.variable[variableName]) {
+      result = context.variable[variableName].replace(/^~\//, context.basePath+'/');
     }
     return result;
   }

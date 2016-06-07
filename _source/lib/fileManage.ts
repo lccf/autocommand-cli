@@ -30,11 +30,11 @@ export default class fileManage extends AutocommandBase {
   public originFileName: string;
   /* 获取文件名 */
   private _fileName: string;
-  /* 基础路径 */
-  private basePath: string;
   get fileName(): string {
     return this._fileName;
   }
+  /* 基础路径 */
+  private basePath: string;
   /* 获取文件扩展名 */
   private _fileExt: string;
   get fileExt(): string {
@@ -62,6 +62,24 @@ export default class fileManage extends AutocommandBase {
     return this._file;
   }
 
+  /* definePath */
+  private _definePath: string = '.';
+  get definePath(): string {
+    return this._definePath;
+  }
+
+  /* relativePath */
+  private _relativePath: string = '.';
+  get relativePath(): string {
+    return this._relativePath;
+  }
+
+  /* defineRelativePath */
+  private _defineRelativePath: string = '.';
+  get defineRelativePath(): string {
+    return this._defineRelativePath;
+  }
+
   public parseFileExt(): void {
     let ext: string = path.extname(this.originfile);
     this._fileExt = ext;
@@ -81,11 +99,11 @@ export default class fileManage extends AutocommandBase {
     let fileName: string = this.fileName;
     let filePath: string = this.filePath;
     let ext: string = this.fileExt;
-    let relativePath: string = path.relative(process.cwd(), filePath);
+    let relativePath: string = path.relative(process.cwd(), filePath) || '.';
 
     if (path.sep != '/') {
-      relativePath = relativePath.replace(/\\/g, '/');
-      file = file.replace(/\\/g, '/');
+      relativePath = relativePath.replace('\\', '/');
+      file = file.replace('\\', '/');
     }
 
     let cmdDefine: any = config.define;
@@ -93,9 +111,14 @@ export default class fileManage extends AutocommandBase {
     let cmdArray: Array<string> = [];
     // 循环检测目录
     let definePath = relativePath;
+    let defineRelativePath = '.';
+    this._relativePath = relativePath;
     while(definePath != '.') {
       if (cmdDefine[definePath+'/'] && cmdDefine[definePath+'/'][ext]) {
         pathNode = cmdDefine[definePath+'/'];
+        defineRelativePath = path.relative(definePath, relativePath) || '.';
+        this._definePath = definePath;
+        this._defineRelativePath = defineRelativePath;
         break;
       }
       definePath = path.dirname(definePath);
@@ -118,6 +141,8 @@ export default class fileManage extends AutocommandBase {
       fileName: fileName,
       basePath: this.basePath,
       relativePath: relativePath,
+      definePath: this.definePath,
+      defineRelativePath: this.defineRelativePath,
       variable: config.variable
     }
     if (cmdNode) {
