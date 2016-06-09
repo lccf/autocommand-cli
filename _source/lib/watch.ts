@@ -79,7 +79,12 @@ class Watch extends AutocommandBase {
         }
         fileList = this.checkIgnore(fileList);
         if (!fileList) {
-          console.log('file not find or ignore');
+          console.error('file ignore');
+          return;
+        }
+        if (!fileList.length) {
+          console.error('file not find');
+          return;
         }
         console.log('find files:\n'+fileList.join('\n'));
         fileList.map(this.compileCallback.bind(this));
