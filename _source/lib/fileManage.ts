@@ -1,4 +1,4 @@
-/// <reference path="../../typings/main.d.ts" />
+/// <reference path="../../typings/index" />
 /// <reference path="../declare/main.d.ts" />
 import path = require('path');
 import AutocommandBase from './AutocommandBase';

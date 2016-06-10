@@ -1,4 +1,4 @@
-/// <reference path="../../typings/main" />
+/// <reference path="../../typings/index" />
 import fs = require('fs');
 import hjson = require('hjson');
 import configStructure from '../declare/config';

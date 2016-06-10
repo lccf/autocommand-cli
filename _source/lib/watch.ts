@@ -1,7 +1,8 @@
-/// <reference path="../../typings/main.d.ts"/>
+/// <reference path="../../typings/index"/>
 
 import path = require('path');
 import child_process = require('child_process');
+let exec = require('child_process').exec;
 import browserSync = require('browser-sync');
 import chokidar = require('chokidar');
 import glob = require('glob');
@@ -12,8 +13,6 @@ import configUtil from './configUtil';
 import configStructure from '../declare/config';
 
 import AutocommandBase from './AutocommandBase';
-
-let exec = child_process.exec;
 
 class Watch extends AutocommandBase {
     config: configStructure;
