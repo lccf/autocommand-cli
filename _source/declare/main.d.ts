@@ -17,3 +17,7 @@ declare module "ignore" {
 declare module "hjson" {
     function parse (json: string): JSON
 }
+
+interface Object {
+    assign(target: any, ...sources: any[]): any;
+}

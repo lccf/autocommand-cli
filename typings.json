@@ -3,7 +3,9 @@
     "browser-sync": "registry:dt/browser-sync#0.0.0+20160524142403",
     "chokidar": "registry:dt/chokidar#1.4.3+20160316155526",
     "commander": "registry:dt/commander#2.3.0+20160317120654",
-    "node": "registry:dt/node#6.0.0+20160608110640"
+    "micromatch": "registry:dt/micromatch#2.3.7+20160123140905",
+    "node": "registry:dt/node#6.0.0+20160608110640",
+    "parse-glob": "registry:dt/parse-glob#3.0.4+20160110125512"
   },
   "dependencies": {
     "glob": "registry:npm/glob#6.0.0+20160211003958"

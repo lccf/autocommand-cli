@@ -128,7 +128,7 @@ export default class configUtil {
   }
   public static testAction(configPath: string): void {
     try {
-      let result: boolean = this.read(configPath);
+      let result: boolean = this.testConfig(configPath);
       if (result) {
         console.log('success');
       }
