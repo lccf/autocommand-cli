@@ -1,4 +1,5 @@
-/// <reference path="../../typings/index"/>
+/// <reference path="../../typings/index.d.ts"/>
+/// <reference path="../declare/main.d.ts" />
 
 import path = require('path');
 import child_process = require('child_process');
@@ -8,9 +9,9 @@ import chokidar = require('chokidar');
 import glob = require('glob');
 import ignore = require('ignore');
 
+import { configStructure } from '../declare/config'
 import fileManage from './fileManage';
 import configUtil from './configUtil';
-import configStructure from '../declare/config';
 
 import AutocommandBase from './AutocommandBase';
 
@@ -144,8 +145,8 @@ class Watch extends AutocommandBase {
       }
     }
     /* 检测忽略 */
-    checkIgnore(file: any): any {
-      let ignoreRules = [].concat(this.config.ignore);
+    checkIgnore(file: string|Array<string>): any {
+      let ignoreRules: Array<string> = [].concat(this.config.ignore);
       let ig = ignore().add(ignoreRules);
       let result = ig.filter(file);
       if (result && result.length) {

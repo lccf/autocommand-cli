@@ -12,7 +12,7 @@ interface defineStructure {
   command: StringOrStringArray;
 }
 
-export default interface configStructure {
+export interface configStructure {
   file: StringOrStringArray;
   define: defineStructure;
   ignore?: StringOrStringArray;

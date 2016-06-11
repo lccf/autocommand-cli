@@ -1,7 +1,9 @@
-/// <reference path="../../typings/index" />
+/// <reference path="../../typings/index.d.ts" />
+/// <reference path="../declare/main.d.ts" />
+
 import fs = require('fs');
 import hjson = require('hjson');
-import configStructure from '../declare/config';
+import { configStructure } from '../declare/config';
 
 export default class configUtil {
   public static defaultConfig = '_config';
@@ -11,7 +13,7 @@ export default class configUtil {
    * @param configFile {string} 配置文件名
    * @param force {boolean} 是否强制更新，默认仅首次读取
    */
-  public static getConfig(configFile: string, force: boolean = false): JSON {
+  public static getConfig(configFile: string, force: boolean = false): configStructure {
     let config: any = null;
     if (!configUtil._instance[configFile] || force) {
       config = configUtil._instance[configFile] = configUtil.read(configFile);
@@ -26,7 +28,7 @@ export default class configUtil {
    * 读取配置文件
    * @param configFile {string} 配置文件名
    */
-  public static read(configFile: string): any {
+  public static read(configFile: string): configStructure {
     let result: any = null;
     if (!configFile.length) {
       configFile = '_config';
@@ -51,7 +53,7 @@ export default class configUtil {
   // 侦听的文件
   "file": ["**/*.jade", "*.sass", "*.ls"],
   // 过滤
-  "ignore": ["_*", "node_modules/"],
+  "ignore": ["_*.*", "node_modules/"],
   // 变量
   "variable": {
     "LocalBin": "~/node_modules/.bin"

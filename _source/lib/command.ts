@@ -1,5 +1,5 @@
-/// <reference path="../../typings/main" />
-/// <reference path="../declare/main.d.ts" />
+/// <reference path="../../typings/index.d.ts" />
+
 let program:commander.IExportedCommand = require('commander');
 let pkg:any = require('../package.json');
 

@@ -1,8 +1,8 @@
-/// <reference path="../../typings/index" />
-/// <reference path="../declare/main.d.ts" />
+/// <reference path="../../typings/index.d.ts" />
+
 import path = require('path');
 import AutocommandBase from './AutocommandBase';
-import configStructure from '../declare/config';
+import { configStructure } from '../declare/config';
 
 export default class fileManage extends AutocommandBase {
   private static _instance = {}
