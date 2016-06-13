@@ -1,10 +1,11 @@
-/// <reference path="../typings/main"/>
+/// <reference path="../typings/index.d.ts"/>
 "use strict";
 var watch_1 = require('./lib/watch');
 var Autocommand = (function () {
     function Autocommand() {
     }
     Autocommand.create = function () {
+        return new Autocommand();
     };
     Autocommand.prototype.watch = function (config) {
         watch_1.default.callModel(config).startWatch();
