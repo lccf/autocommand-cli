@@ -22,6 +22,12 @@ class Watch extends AutocommandBase {
     browserSync: any;
     watcher: any;
 
+    debugInfo(info: any): void {
+      if (this.config.debug) {
+        console.log(info);
+      }
+    }
+
     callModel(config: configStructure): any {
       this.config = config;
       this.basePath = process.cwd();
@@ -230,7 +236,7 @@ class Watch extends AutocommandBase {
           cmdIndex = -1;
         }
         if (currCmd) {
-          console.log("exec command:" + currCmd);
+          this.debugInfo("exec command:" + currCmd);
           let execOptions: any = {};
           if (workPath) {
             execOptions.cwd = workPath
@@ -246,7 +252,7 @@ class Watch extends AutocommandBase {
           }
         }
       }
-      execCmd();
+      execCmd.bind(this)();
     }
     /* 编译回调 */
     compileCallback(file: string): void {

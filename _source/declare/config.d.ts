@@ -19,4 +19,5 @@ export interface configStructure {
   variable?: any;
   environment?: any;
   browserSync?: bSyncConfigStructure;
+  debug?: boolean;
 }
