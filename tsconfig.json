@@ -4,7 +4,10 @@
     "target": "es5"
   },
   "exclude": [
-    "node_modules",
-    "typings"
+    "node_modules"
+  ],
+  "file": [
+    "./typings/index.d.ts",
+    "./declare/main.d.ts"
   ]
 }

@@ -15,7 +15,7 @@ import configUtil from './configUtil';
 
 import AutocommandBase from './AutocommandBase';
 
-class Watch extends AutocommandBase {
+export default class Watch extends AutocommandBase {
     config: configStructure;
     configFile: string;
     basePath: string;
@@ -269,4 +269,3 @@ class Watch extends AutocommandBase {
       }
     }
 }
-export default new Watch();
