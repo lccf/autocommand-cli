@@ -147,7 +147,7 @@ export default class Watch extends AutocommandBase {
         this.startWatch();
       }
       else {
-        console.log('config parse error');
+        console.error('config parse error');
       }
     }
     /* 检测忽略 */
