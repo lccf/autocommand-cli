@@ -155,8 +155,10 @@ export default class Watch extends AutocommandBase {
     }
     /* 检测忽略 */
     checkIgnore(file: string|Array<string>): any {
-      let ignoreRules: Array<string> = [].concat(this.config.ignore);
-      let ig = ignore().add(ignoreRules);
+      let ignoreRules: Array<any> = [].concat(this.config.ignore);
+      // 筛选字符串过滤规则
+      let stringIgnoreRules = ignoreRules.filter((item) => typeof item == 'string' ? true : false)
+      let ig = ignore().add(stringIgnoreRules);
       let result = ig.filter(file);
       if (result && result.length) {
         return result;
