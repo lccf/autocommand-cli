@@ -106,7 +106,10 @@ export default class Watch extends AutocommandBase {
           file = file.replace(/\\/g, '/');
           watchFile.push(path.resolve(this.basePath, file));
         }
-        watchFile.push(this.configFile);
+        if (this.configFile) {
+          // 命令行模式没有配置文件
+          watchFile.push(this.configFile);
+        }
         if (config.browserSync) {
           if (!this.browserSync) {
             this.browserSync = browserSync.create();
