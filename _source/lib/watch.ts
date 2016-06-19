@@ -170,6 +170,13 @@ export default class Watch extends AutocommandBase {
           result = result.filter(rule);
         }
       }
+      // 筛选正则表达式过滤规则
+      let regexpIgnoreRules = ignoreRules.filter((item) => typeof item == 'object' && item.constructor == RegExp ? true : false);
+      if (regexpIgnoreRules && regexpIgnoreRules.length) {
+        for (let rule of regexpIgnoreRules) {
+          result = result.filter((item) => item.match(rule) == null);
+        }
+      }
       if (result && result.length) {
         return result;
       }
