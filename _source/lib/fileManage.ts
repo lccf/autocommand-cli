@@ -155,7 +155,12 @@ export default class fileManage extends AutocommandBase {
     this._command = result;
     this.originFileName = path.relative(this.basePath, this.originfile);
     if (cmdNode.file) {
-      this._file = this.replaceVariable(cmdNode.file, variableContext).replace(/^\.\//,'');
+      // 处理file字段函数调用
+      if (typeof cmdNode.file == 'string') {
+        this._file = this.replaceVariable(cmdNode.file, variableContext).replace(/^\.\//,'');
+      } else if (typeof cmdNode.file == 'function') {
+        this._file = cmdNode.file(this.originfile);
+      }
     }
   }
   /* 构造函数 */
