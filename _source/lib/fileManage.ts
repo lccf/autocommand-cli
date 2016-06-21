@@ -108,7 +108,7 @@ export default class fileManage extends AutocommandBase {
 
     let cmdDefine: any = config.define;
     let pathNode: any = false;
-    let cmdArray: Array<string> = [];
+    let cmdArray: Array<any> = [];
     // 循环检测目录
     let definePath = relativePath;
     let defineRelativePath = '.';
@@ -148,7 +148,18 @@ export default class fileManage extends AutocommandBase {
     if (cmdNode) {
       cmdArray = [].concat(cmdNode.command);
       cmdArray = cmdArray.map((item) => {
-        return this.replaceVariable(item, variableContext);
+        let cmd: any;
+        switch(typeof item) {
+          case 'string':
+            cmd = this.replaceVariable(item, variableContext);
+            break;
+          case 'function':
+            cmd = item(file);
+            break;
+          default:
+            cmd = item;
+        }
+        return cmd;
       })
       result = result.concat(cmdArray);
     }
@@ -159,7 +170,10 @@ export default class fileManage extends AutocommandBase {
       if (typeof cmdNode.file == 'string') {
         this._file = this.replaceVariable(cmdNode.file, variableContext).replace(/^\.\//,'');
       } else if (typeof cmdNode.file == 'function') {
-        this._file = cmdNode.file(this.originfile);
+        this._file = cmdNode.file(file);
+      }
+      else {
+        this._file = cmdNode.file;
       }
     }
   }
