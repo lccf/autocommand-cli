@@ -1,6 +1,6 @@
 import browserSync = require('browser-sync');
 
-type StringOrStringArray = string | Array<string>;
+type StringOrStringArray = string | Array<string | Function>;
 
 interface bSyncConfigStructure {
   init: browserSync.Options;
