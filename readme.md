@@ -17,15 +17,16 @@ npm install pug-cli node-sass livescript --save-dev
 acmd config -i
 ```
 创建文件
+
 vim index.jade
 ```jade
+doctype html
 html
-  background-color: #CCC
-
-h1
-  text-align: center
-  padding:
-    top: 40px
+  head
+    title index
+    link(rel="stylesheet" href="style.css")
+  body
+    h1 acmd 测试
 ```
 vim style.sass
 ```sass
