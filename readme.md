@@ -1,10 +1,53 @@
 # autocommand-cli
 autocommand的命令行版本，使用nodejs实现。
 
-## 安装
+## 示例
+安装
 ```bash
 npm install thinkjs/autocommand-cli -g
 ```
+
+创建项目
+```bash
+mkdir acmd-project
+cd acmd-project
+# 安装编译库，pug用来编译jade、node-sass编译sass、livescript编译ls
+npm install pug-cli node-sass livescript --save-dev
+# 初始化配置文件
+acmd config -i
+```
+创建文件
+vim index.jade
+```jade
+html
+  background-color: #CCC
+
+h1
+  text-align: center
+  padding:
+    top: 40px
+```
+vim style.sass
+```sass
+html
+  background-color: #CCC
+
+h1
+  text-align: center
+  padding:
+    top: 40px
+```
+
+编译
+```bash
+acmd run
+```
+
+侦听模式
+```bash
+acmd watch
+```
+默认启用browser-sync的server功能，可直接访问页面。用编辑器修改jade、sass文件后会自动更新。
 
 ## 帮助
 ```bash
