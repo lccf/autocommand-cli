@@ -196,14 +196,8 @@ export default class Watch extends AutocommandBase {
         return;
       }
       if (fileObject.cmdPath) {
-        // 相对于当前配置文件的工作路径计算
-        if (fileObject.cmdPath.match(/^~\//)) {
-          workPath = path.resolve(basePath, fileObject.cmdPath.substr(2));
-        }
-        // 当对于当前文件的工作路径计算
-        else if (fileObject.cmdPath !== '~') {
-          workPath = path.resolve(fileObject.filePath, fileObject.cmdPath);
-        }
+        workPath = fileObject.cmdPath;
+        console.log('workPath:'+workPath);
       }
       /**
        * 计算环境变量

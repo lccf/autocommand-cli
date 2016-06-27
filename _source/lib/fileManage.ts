@@ -132,7 +132,12 @@ export default class fileManage extends AutocommandBase {
     }
 
     if (pathNode.path) {
-      this._cmdPath = pathNode.path;
+      if (pathNode.path.match(/^~\//)) {
+        this._cmdPath = path.resolve(this.basePath, pathNode.path.substr(2));
+      }
+      else if (pathNode.path !== '~') {
+        this._cmdPath = path.resolve(this.filePath, pathNode.path);
+      }
     }
 
     let cmdNode: any = pathNode[ext];
