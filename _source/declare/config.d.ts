@@ -1,4 +1,5 @@
 import browserSync = require('browser-sync');
+
 type StringOrArray = string | Array<string | Function>
 type StringOrStringArray = string | Array<string>;
 
@@ -9,6 +10,7 @@ interface bSyncConfigStructure {
 
 interface defineStructure {
   file: string;
+  path?: string;
   command: StringOrStringArray;
 }
 
