@@ -94,11 +94,9 @@ export default class fileManage extends AutocommandBase {
     this._filePath = filePath;
   }
   public parseFileCommand(): void {
-    let config = this.config;
+    let {config, fileName, filePath } = this;
     let result: Array<any> = [];
     let file: string = this.originfile;
-    let fileName: string = this.fileName;
-    let filePath: string = this.filePath;
     let ext: string = this.fileExt;
     let relativePath: string = path.relative(process.cwd(), filePath) || '.';
 
@@ -165,7 +163,7 @@ export default class fileManage extends AutocommandBase {
             cmd = this.replaceVariable(item, variableContext);
             break;
           case 'function':
-            cmd = item(file);
+            cmd = item(variableContext);
             break;
           default:
             cmd = item;
