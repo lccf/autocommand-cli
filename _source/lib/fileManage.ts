@@ -27,7 +27,8 @@ export default class fileManage extends AutocommandBase {
   }
   public config: configStructure;
   private originfile: string;
-  public originFileName: string;
+
+  public relativeFile: string;
   /* 获取文件名 */
   private _fileName: string;
   get fileName(): string {
@@ -140,6 +141,10 @@ export default class fileManage extends AutocommandBase {
       }
     }
 
+    // 相对文件名
+    this.relativeFile  = path.relative(this.basePath, this.originfile);
+
+    // 计算路径
     let cmdNode: any = pathNode[ext];
     let variableContext = {
       file: file,
@@ -147,6 +152,7 @@ export default class fileManage extends AutocommandBase {
       basePath: this.basePath,
       relativePath: relativePath,
       definePath: this.definePath,
+      relativeFile: this.relativeFile,
       defineRelativePath: this.defineRelativePath,
       variable: config.variable
     }
@@ -169,13 +175,15 @@ export default class fileManage extends AutocommandBase {
       result = result.concat(cmdArray);
     }
     this._command = result;
-    this.originFileName = path.relative(this.basePath, this.originfile);
+
+
+    // 计算file字段
     if (cmdNode.file) {
       // 处理file字段函数调用
       if (typeof cmdNode.file == 'string') {
         this._file = this.replaceVariable(cmdNode.file, variableContext).replace(/^\.\//,'');
       } else if (typeof cmdNode.file == 'function') {
-        this._file = cmdNode.file(file);
+        this._file = cmdNode.file(variableContext);
       }
       else {
         this._file = cmdNode.file;
