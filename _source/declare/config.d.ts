@@ -9,7 +9,7 @@ interface bSyncConfigStructure {
 }
 
 interface defineStructure {
-  file: string;
+  file: string | Function;
   path?: string;
   command: StringOrStringArray;
 }
