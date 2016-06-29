@@ -185,7 +185,7 @@ export default class Watch extends AutocommandBase {
     compileTask(file: string, reload: any): void {
       let fileObject = fileManage.getFile(file, this.config, this.basePath);
       let {command, relativeFile} = fileObject;
-      let fileName: string = fileObject.file;
+      let compileFile: string = fileObject.file;
       let workPath: string = '';
       let basePath: string = this.basePath;
       let environment: any = null;
@@ -234,9 +234,9 @@ export default class Watch extends AutocommandBase {
        */
       let execCallback: any = function (err, stdo, stde) {
         if (err == null && !stde) {
-          console.log("compiled "+(fileName || relativeFile));
-          if (reload && fileName) {
-            reload(fileName);
+          console.log("compiled "+(compileFile || relativeFile));
+          if (reload && compileFile) {
+            reload(compileFile);
           }
         } else {
           console.error(err || stde);
