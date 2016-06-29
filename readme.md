@@ -202,9 +202,12 @@ acmd watch
 在command，file中默认支持以下变量：
 - file 表示当前文件
 - fileName 表示当前文件名(不包含扩展名)
+- basePath 当前命令的工作路径
 - relativePath 当前文件相对于项目根目录的路径
-- definePath 命令定义目录相对于根目录的路径
+- defilePath 针对当前文件的定义路径
+- relativeFile 相对于当前工作路径的文件名，含路径
 - defineRelativePath 文件相路径相对于定义命令目录的路径
+- variable 自定义变量
 
 * 在variable中定义的变量使用~表示项目当前路径
 
