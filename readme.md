@@ -43,12 +43,13 @@ h1
 ```bash
 acmd run
 ```
+编译模式，系统会根据配置中的file字段找到匹配的文件，并执行对应的命令。
 
 侦听模式
 ```bash
 acmd watch
 ```
-默认启用browser-sync的server功能，可直接访问页面。用编辑器修改jade、sass文件后会自动更新。
+侦听模式，系统会根据配置中的file字段找到匹配的文件，侦听文件的修改，并执行对应的命令。默认启用browser-sync的server功能，可直接访问页面。用编辑器修改jade、sass文件后会自动更新。
 
 ## 帮助
 ```bash
