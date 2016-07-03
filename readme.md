@@ -77,6 +77,14 @@ acmd run
 acmd watch
 ```
 
+## nodejs模块
+```javascript
+var acmd = require('autocommand-cli').create();
+var config = {...};
+acmd.watch(config); // 有watch和run方法，对应侦听和运行模式
+```
+运行在命令行模式时，ignore、file、command可以为函数类型。ignore的参数为全路径的文件名。file、command的参数为一个对象，见variable配置项。
+
 ## 配置
 
 示例：
