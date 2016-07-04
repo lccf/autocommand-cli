@@ -1,6 +1,6 @@
 {
   "name": "autocommand-cli",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "autocommand command-line interface",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,5 @@
   },
   "bin": {
     "acmd": "./bin/acmd"
-  },
-  "devDependencies": {
-    "livescript": "^1.4.0"
   }
 }
