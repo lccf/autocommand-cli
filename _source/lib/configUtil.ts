@@ -33,7 +33,8 @@ export default class configUtil {
     if (!configFile.length) {
       configFile = '_config';
     }
-    if (fs.existsSync(configFile)) {
+    try {
+      fs.statSync(configFile);
       let configContent: string = fs.readFileSync(configFile, 'utf-8');
       try {
         result = hjson.parse(configContent);
@@ -44,7 +45,7 @@ export default class configUtil {
         throw new Error("parse config error");
       }
     }
-    else {
+    catch(e) {
       throw new Error("config file not found");
     }
   }
