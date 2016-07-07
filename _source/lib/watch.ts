@@ -34,8 +34,17 @@ export default class Watch extends AutocommandBase {
       return this;
     }
 
-    compile(): void {
-      this.run({compile: true});
+    compile(options: any): void {
+      let fileParam = [];
+      if (options.file && options.file != true) {
+        fileParam = options.file.split(/\s*,\s*|\s+/);
+      }
+      if (fileParam) {
+        this.run({compileWithFile: fileParam});
+      }
+      else {
+        this.run({compile: true});
+      }
     }
     /* 主入口函数 */
     run(options: any): void {
@@ -52,6 +61,9 @@ export default class Watch extends AutocommandBase {
       if (!options.test) {
         if (options.compile) {
           this.runCommand();
+        }
+        else if (options.compileWithFile) {
+          console.log(options);
         }
         else {
           this.startWatch();
