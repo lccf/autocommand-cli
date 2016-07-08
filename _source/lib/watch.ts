@@ -36,8 +36,8 @@ export default class Watch extends AutocommandBase {
 
     compile(options: any): void {
       let fileParam = [];
-      if (options.file && options.file != true) {
-        fileParam = options.file.split(/\s*,\s*|\s+/);
+      if (options.file && options.file !== true) {
+        fileParam = [].concat(options.file.split(/\s*,\s*|\s+/));
       }
       if (fileParam) {
         this.run({compileWithFile: fileParam});
@@ -63,7 +63,7 @@ export default class Watch extends AutocommandBase {
           this.runCommand();
         }
         else if (options.compileWithFile) {
-          console.log(options);
+          this.runCommand(options.compileWithFile);
         }
         else {
           this.startWatch();
@@ -80,33 +80,35 @@ export default class Watch extends AutocommandBase {
       this.compileCallback(path.resolve(this.basePath +'/'+ testFile));
     }
     /* 编译模式 */
-    runCommand(): void {
-      let config = this.config;
-
-      let files: Array<string> = [];
-      if (config.file || config.file.length) {
-        for(let file of config.file) {
-          file = file.replace(/\\/g, '/');
-          files.push(path.resolve(this.basePath, file));
+    runCommand(files: Array<string> = []): void {
+      // 如果未指定文件类型则从配置文件中取
+      if (!files.length) {
+        let config = this.config;
+        if (config.file || config.file.length) {
+          for(let file of config.file) {
+            file = file.replace(/\\/g, '/');
+            files.push(path.resolve(this.basePath, file));
+          }
         }
-        let fileList: Array<string> = [];
-
-        for (let item of files) {
-          let file = glob.sync(item);
-          fileList = fileList.concat(file);
-        }
-        fileList = this.checkIgnore(fileList);
-        if (!fileList) {
-          console.error('file ignore');
-          return;
-        }
-        if (!fileList.length) {
-          console.error('file not find');
-          return;
-        }
-        console.log('find files:\n'+fileList.join('\n'));
-        fileList.map(this.compileCallback.bind(this));
       }
+      
+      let fileList: Array<string> = [];
+
+      for (let item of files) {
+        let file = glob.sync(item);
+        fileList = fileList.concat(file);
+      }
+      if (!fileList.length) {
+        console.error('file not find');
+        return;
+      }
+      fileList = this.checkIgnore(fileList);
+      if (!fileList) {
+        console.error('file ignore');
+        return;
+      }
+      console.log('find files:\n'+fileList.join('\n'));
+      fileList.map(this.compileCallback.bind(this));
     }
     /* 监听模式 */
     startWatch(): void {
