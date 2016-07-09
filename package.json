@@ -4,7 +4,9 @@
   "description": "autocommand command-line interface",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lsc browserSyncFile.ls",
+    "postinstall": "typings install"
   },
   "keywords": [
     "auto command",
