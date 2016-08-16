@@ -248,14 +248,20 @@ export default class Watch extends AutocommandBase {
        */
       let execCallback: any = function (err, stdo, stde) {
         if (err == null && !stde) {
-          console.log("compiled "+(compileFile || relativeFile));
-          if (reload && compileFile) {
-            reload(compileFile);
+          if (cmdIndex != -1) {
+            execCmd();
+          } else {
+            console.log("compiled "+(compileFile || relativeFile));
+            if (reload && compileFile) {
+              reload(compileFile);
+            }
           }
         } else {
           console.error(err || stde);
         }
       }
+
+      let debugInfo = this.debugInfo.bind(this);
       /**
        * 执行命令
        */
@@ -265,7 +271,7 @@ export default class Watch extends AutocommandBase {
           cmdIndex = -1;
         }
         if (currCmd) {
-          this.debugInfo("exec command:" + currCmd);
+          debugInfo("exec command:" + currCmd);
           let execOptions: any = {};
           if (workPath) {
             execOptions.cwd = workPath
@@ -281,7 +287,8 @@ export default class Watch extends AutocommandBase {
           }
         }
       }
-      execCmd.bind(this)();
+
+      execCmd();
     }
     /* 编译回调 */
     compileCallback(file: string): void {
