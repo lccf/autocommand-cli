@@ -57,11 +57,11 @@ export default class configUtil {
   "ignore": ["_*.*", "node_modules/"],
   // 变量
   "variable": {
-    "LocalBin": "~/node_modules/.bin"
+    "localBin": "~/node_modules/.bin"
   },
   // 环境变量
   "environment": {
-    ":PATH": "#{LocalBin}"
+    ":PATH": "#{localBin}"
   },
   // 定义
   "define": {
@@ -95,7 +95,8 @@ export default class configUtil {
       "server": {
         "baseDir": "./"
       },
-      "open": false
+      "open": false,
+      "ui": false
     },
     // 启动livereload
     "reload": true
