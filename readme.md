@@ -72,6 +72,14 @@ acmd run
 ```
 扫描配置文件，根据配置文件的内容对匹配的文件执行指定命令
 
+#### 对指定文件执行命令
+```bash
+acmd run -f *.jade *.coffee // 对当前目录下的jade/coffee文件执行命令
+acmd run -f '*.{jade,ts}' '**/*.{coffee,sass}' // 根据glob的查找规则文件并执行命令
+git status -uno | awk '{print $2}' | acmd run -o // 对git中已修改的文件执行命令
+find . -name *.jade | acmd run -o // 对管道中的文件执行命令
+```
+
 ### 监听
 ```bash
 acmd watch

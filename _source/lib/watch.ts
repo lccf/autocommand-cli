@@ -62,8 +62,13 @@ export default class Watch extends AutocommandBase {
           fileParam.push(data);
           //process.stdout.write(data);
         }).on('end', function() {
-          this.run({compileWithFile: fileParam});
-        }.bind(this));;
+          if (fileParam.length) {
+            this.run({compileWithFile: fileParam});
+          }
+          else {
+            console.error('not file in stdin');
+          }
+        }.bind(this));
       }
       else {
         this.run({compile: true});
