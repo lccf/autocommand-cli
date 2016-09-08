@@ -34,10 +34,24 @@ export default class Watch extends AutocommandBase {
       return this;
     }
 
-    compile(options: any): void {
+    compile(match: any, options: any): void {
       let fileParam = [];
-      if (options.file && options.file !== true) {
-        fileParam = [].concat(options.file.split(/\s*,\s*|\s+/));
+      // options 传参
+      if (!options) {
+        options = match;
+      }
+      // 取多个参
+      if (options.file) {
+        let rawArgs = options.parent.rawArgs;
+        for(let i: number = rawArgs.length; i> 0; i--) {
+          let arg = rawArgs[i-1];
+          if (arg.indexOf('-') < 0) {
+            fileParam.unshift(arg);
+          }
+          else {
+            break;
+          }
+        }
       }
       if (fileParam) {
         this.run({compileWithFile: fileParam});
