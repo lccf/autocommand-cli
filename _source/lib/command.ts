@@ -25,6 +25,7 @@ export default function (args:string[]):void {
     program.command('run', '')
     .description('run command by config')
     .option('-f, --file <file>', 'run command by file')
+    .option('-o, --stdout', 'run command by stdout file')
     .action(watch.compile.bind(watch));
 
     program.parse(args);

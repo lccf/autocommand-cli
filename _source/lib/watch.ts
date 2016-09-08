@@ -52,9 +52,18 @@ export default class Watch extends AutocommandBase {
             break;
           }
         }
-      }
-      if (fileParam) {
         this.run({compileWithFile: fileParam});
+      }
+      // compile by stdout
+      else if (options.stdout) {
+        process.stdin.resume();
+        process.stdin.setEncoding('utf8');  
+        process.stdin.on('data', function(data) {
+          fileParam.push(data);
+          //process.stdout.write(data);
+        }).on('end', function() {
+          this.run({compileWithFile: fileParam});
+        }.bind(this));;
       }
       else {
         this.run({compile: true});
