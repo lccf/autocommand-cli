@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "lsc browserSyncFile.ls",
-    "prepublish": "typings install"
+    "postinstall": "[ \"$NODE_ENV\" != production ] && typings install"
   },
   "keywords": [
     "auto command",
@@ -25,5 +25,8 @@
   },
   "bin": {
     "acmd": "./bin/acmd"
+  },
+  "devDependencies": {
+    "typings": "^1.4.0"
   }
 }
