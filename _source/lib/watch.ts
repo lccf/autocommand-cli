@@ -59,8 +59,8 @@ export default class Watch extends AutocommandBase {
         process.stdin.resume();
         process.stdin.setEncoding('utf8');  
         process.stdin.on('data', function(data) {
-          fileParam.push(data);
-          //process.stdout.write(data);
+          let files = data.toString().replace(/^\s|\s$/g, '').split("\n");
+          fileParam = fileParam.concat(files);
         }).on('end', function() {
           if (fileParam.length) {
             this.run({compileWithFile: fileParam});

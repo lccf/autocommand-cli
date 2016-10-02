@@ -76,7 +76,7 @@ acmd run
 ```bash
 acmd run -f *.jade *.coffee // 对当前目录下的jade/coffee文件执行命令
 acmd run -f '*.{jade,ts}' '**/*.{coffee,sass}' // 根据glob的查找规则文件并执行命令
-git status -uno | awk '{print $2}' | acmd run -o // 对git中已修改的文件执行命令
+git status -suno | awk '{print $2}' | acmd run -o // 对git中已修改的文件执行命令
 find . -name *.jade | acmd run -o // 对管道中的文件执行命令
 ```
 
