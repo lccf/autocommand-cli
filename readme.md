@@ -4,7 +4,7 @@ autocommand的命令行版本，使用nodejs实现。
 ## 示例
 安装
 ```bash
-npm install thinkjs/autocommand-cli#latest -g
+npm install lccf/autocommand-cli#latest -g
 ```
 
 创建项目
