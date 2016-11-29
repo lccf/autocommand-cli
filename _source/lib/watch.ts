@@ -1,18 +1,16 @@
-/// <reference path="../../typings/index.d.ts"/>
-/// <reference path="../declare/main.d.ts" />
+/// <reference path="../declare/index.d.ts" />
 
-import path = require('path');
-import child_process = require('child_process');
-let exec = require('child_process').exec;
-import browserSync = require('browser-sync');
-import chokidar = require('chokidar');
-import glob = require('glob');
-import ignore = require('ignore');
+import * as path from 'path';
+import { exec } from 'child_process';
+
+import * as browserSync from 'browser-sync';
+import * as chokidar from 'chokidar';
+import * as glob from 'glob';
+import { ignore } from 'ignore';
 
 import { configStructure } from '../declare/config'
 import fileManage from './fileManage';
 import configUtil from './configUtil';
-
 import AutocommandBase from './AutocommandBase';
 
 export default class Watch extends AutocommandBase {

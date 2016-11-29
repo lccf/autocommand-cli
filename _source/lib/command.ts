@@ -1,10 +1,9 @@
-/// <reference path="../../typings/index.d.ts" />
-
-let program:commander.IExportedCommand = require('commander');
-let pkg:any = require('../package.json');
+import * as program from 'commander';
 
 import Watch from './watch';
 import configUtil from './configUtil';
+
+let pkg:any = require('../package.json');
 
 export default function (args:string[]):void {
   let watch: Watch = new Watch();

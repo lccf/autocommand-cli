@@ -1,13 +1,12 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "target": "es5"
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "rootDir": "_source",
+    "outDir": "./"
   },
   "exclude": [
     "node_modules"
-  ],
-  "file": [
-    "./typings/index.d.ts",
-    "./declare/main.d.ts"
   ]
 }

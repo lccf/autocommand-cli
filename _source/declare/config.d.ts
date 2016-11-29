@@ -1,4 +1,4 @@
-import browserSync = require('browser-sync');
+import * as browserSync from 'browser-sync';
 
 type StringOrArray = string | Array<string | Function>
 type StringOrStringArray = string | Array<string>;

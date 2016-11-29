@@ -1,8 +1,7 @@
-/// <reference path="../../typings/index.d.ts" />
-/// <reference path="../declare/main.d.ts" />
+/// <reference path="../declare/index.d.ts" />
+import * as fs from 'fs';
+import * as hjson from 'hjson';
 
-import fs = require('fs');
-import hjson = require('hjson');
 import { configStructure } from '../declare/config';
 
 export default class configUtil {

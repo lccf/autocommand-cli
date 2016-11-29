@@ -1,6 +1,5 @@
-/// <reference path="../../typings/index.d.ts" />
+import * as path from 'path';
 
-import path = require('path');
 import AutocommandBase from './AutocommandBase';
 import { configStructure } from '../declare/config';
 
