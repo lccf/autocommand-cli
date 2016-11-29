@@ -4,9 +4,13 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true,
-    "rootDir": "_source",
+    "rootDir": "./_source/",
     "outDir": "./"
   },
+  "files": [
+    "_source/index.ts",
+    "_source/bin/acmd.ts"
+  ],
   "exclude": [
     "node_modules"
   ]
