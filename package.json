@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "lsc browserSyncFile.ls",
-    "postinstall": "typings install"
+    "start": "lsc browserSyncFile.ls"
   },
   "keywords": [
     "auto command",
@@ -16,7 +15,7 @@
   "author": "lcc",
   "license": "MIT",
   "dependencies": {
-    "browser-sync": "^2.11.1",
+    "browser-sync": "^2.18.2",
     "chokidar": "^1.4.3",
     "commander": "^2.9.0",
     "glob": "^7.0.3",
@@ -31,6 +30,8 @@
     "@types/chokidar": "^1.4.29",
     "@types/commander": "^2.3.31",
     "@types/glob": "^5.0.30",
-    "@types/micromatch": "^2.3.29"
+    "@types/micromatch": "^2.3.29",
+    "livescript": "^1.5.0",
+    "typescript": "^2.0.10"
   }
 }

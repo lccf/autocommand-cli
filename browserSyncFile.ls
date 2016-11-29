@@ -74,6 +74,8 @@ compileTask = (file, ext, reload) !->
 
   # execute command
   do execCmd = !->
+    environment = Object.assign {}, process.env
+    environment['PATH'] = "./node_modules/.bin#{path.delimiter}#{environment['PATH']}"
     if Array.isArray cmd
       currCmd = cmd[++cmdIndex]
       if cmd.length <= cmdIndex+1
@@ -82,7 +84,7 @@ compileTask = (file, ext, reload) !->
       currCmd = cmd
 
     if currCmd
-      exec currCmd, execCallback
+      exec currCmd, environment, execCallback
 
 compileCallback = (file) !->
   ext = path.extname file
