@@ -3,8 +3,8 @@ declare module "ignore" {
     add: (rule: string | Array<string>) => IgnoreStructure;
     filter: (files: string | Array<string>) => string | Array<string>;
   }
-
-  export let ignore: () => IgnoreStructure;
+  let ignore: () => IgnoreStructure;
+  export = ignore;
 }
 
 declare module "hjson" {

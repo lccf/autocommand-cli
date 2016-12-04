@@ -6,7 +6,7 @@ import { exec } from 'child_process';
 import * as browserSync from 'browser-sync';
 import * as chokidar from 'chokidar';
 import * as glob from 'glob';
-import { ignore } from 'ignore';
+import * as ignore from 'ignore';
 
 import { configStructure } from '../declare/config'
 import fileManage from './fileManage';
