@@ -224,7 +224,7 @@ export default class Watch extends AutocommandBase {
     /* 编译任务 */
     compileTask(file: string, reload: any): void {
       let fileObject = fileManage.getFile(file, this.config, this.basePath);
-      let {command, relativeFile} = fileObject;
+      let {command, relativeFile, stdout, stderr} = fileObject;
       let compileFile: string = fileObject.file;
       let workPath: string = '';
       let basePath: string = this.basePath;
@@ -269,21 +269,54 @@ export default class Watch extends AutocommandBase {
           }
         }
       }
+      let checkBehavior: any = function(rules, content) {
+        let ret = false;
+        for (let rule of rules) {
+          if (rule.match.match(/^\/.*\/$/) != null) {
+            if (content.match(rule.match.replace(/^\/|\/$/g, '')) != null) {
+              ret = true;
+              console.log(rule.message);
+              break;
+            }
+          }
+          else if (rule.match == content){
+            ret = true;
+            console.log(rule.message);
+            break;
+          }
+        }
+        return ret;
+      }
       /**
        * 执行命令的回调
        */
       let execCallback: any = function (err, stdo, stde) {
+        // 是否继续执行
+        let next = true;
+
         if (err == null && !stde) {
+          if (stdout && checkBehavior(stdout, stdo)) {
+            next = false;
+          }
+        } else {
+          next = false;
+          if (stderr && checkBehavior(stderr, stde)) {
+            next = true;
+          }
+          else {
+            console.error(err || stde);
+          }
+        }
+        if (next) {
           if (cmdIndex != -1) {
             execCmd();
           } else {
+            debugger;
             console.log("compiled "+(compileFile || relativeFile));
             if (reload && compileFile) {
               reload(compileFile);
             }
           }
-        } else {
-          console.error(err || stde);
         }
       }
 

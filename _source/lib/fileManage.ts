@@ -80,6 +80,14 @@ export default class fileManage extends AutocommandBase {
     return this._defineRelativePath;
   }
 
+  private _stdout: any[] | null = null;
+  get stdout() {
+    return this._stdout;
+  }
+  private _stderr: any[] | null = null;
+  get stderr() {
+    return this._stderr
+  }
   public parseFileExt(): void {
     let ext: string = path.extname(this.originfile);
     this._fileExt = ext;
@@ -170,6 +178,10 @@ export default class fileManage extends AutocommandBase {
         return cmd;
       })
       result = result.concat(cmdArray);
+      if (cmdNode['behavior']) {
+        this._stdout = cmdNode['behavior']['stdout'] || null;
+        this._stderr = cmdNode['behavior']['stderr'] || null;
+      }
     }
     this._command = result;
 
