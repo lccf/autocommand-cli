@@ -311,7 +311,6 @@ export default class Watch extends AutocommandBase {
           if (cmdIndex != -1) {
             execCmd();
           } else {
-            debugger;
             console.log("compiled "+(compileFile || relativeFile));
             if (reload && compileFile) {
               reload(compileFile);
