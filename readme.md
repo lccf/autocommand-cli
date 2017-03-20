@@ -179,7 +179,7 @@ acmd.watch(config); // 有watch和run方法，对应侦听和运行模式
 ```
 - file键表示文件编译后的真实文件名，用来显示和发送给livereload函数
 - command代表要执行的命令，可以用数组传入多个命令
-- file和command可是支持变量
+- file和command可支持变量
 
 针对指定目录配置：
 ```javascript
@@ -200,6 +200,26 @@ acmd.watch(config); // 有watch和run方法，对应侦听和运行模式
 ```
 - path 代表执行编译命令的路径，因某些项目需在固定路径编译
 
+修改默认命令行为
+```javascript
+{
+  "define": {
+    ".sass": {
+      "file": "#{fileName}.css",
+      "command": "node-sass #{file} #{fileName}.css",
+      "behavior": {
+        "stderr": [
+          {
+            "match": "/Rendering Complete/",
+            "message": "reject sass error"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+在上例中node-sass不论任何场景，均会在stderr中输出内容影响命令的判断。在behavior中指配置针对stderr的规则，如果match的规则符合，会将这一次的编译错误reject掉，同时输出message中的内容。
 
 ### ignore
 根据指定规则过滤文件，参见[ignore](https://www.npmjs.com/package/ignore)
