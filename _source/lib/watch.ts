@@ -2,8 +2,6 @@
 
 import * as path from 'path';
 import { exec } from 'child_process';
-
-import * as browserSync from 'browser-sync';
 import * as chokidar from 'chokidar';
 import * as glob from 'glob';
 import * as ignore from 'ignore';
@@ -152,7 +150,7 @@ export default class Watch extends AutocommandBase {
         }
         if (config.browserSync) {
           if (!this.browserSync) {
-            this.browserSync = browserSync.create();
+            this.browserSync = config.browserSync.plugin.create();
           }
           if (config.browserSync.init) {
             this.browserSync.init(config.browserSync.init);

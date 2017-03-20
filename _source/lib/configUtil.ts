@@ -1,11 +1,10 @@
 /// <reference path="../declare/index.d.ts" />
 import * as fs from 'fs';
-import * as hjson from 'hjson';
 
 import { configStructure } from '../declare/config';
 
 export default class configUtil {
-  public static defaultConfig = '_config';
+  public static defaultConfig = 'acmd.config.js';
   private static _instance: any = {};
   /**
    * 获取配置文件
@@ -15,7 +14,7 @@ export default class configUtil {
   public static getConfig(configFile: string, force: boolean = false): configStructure {
     let config: any = null;
     if (!configUtil._instance[configFile] || force) {
-      config = configUtil._instance[configFile] = configUtil.read(configFile);
+      config = configUtil._instance[configFile] = require(configFile);
     }
     else {
       config = configUtil._instance[configFile];
@@ -23,31 +22,6 @@ export default class configUtil {
     return config;
   }
 
-  /**
-   * 读取配置文件
-   * @param configFile {string} 配置文件名
-   */
-  public static read(configFile: string): configStructure {
-    let result: any = null;
-    if (!configFile.length) {
-      configFile = '_config';
-    }
-    try {
-      fs.statSync(configFile);
-      let configContent: string = fs.readFileSync(configFile, 'utf-8');
-      try {
-        result = hjson.parse(configContent);
-        return result;
-      }
-      catch(e) {
-        console.error(e.stack);
-        throw new Error("parse config error");
-      }
-    }
-    catch(e) {
-      throw new Error("config file not found");
-    }
-  }
   private static initConfig(options): any {
     let configContent: string = `{
   // 侦听的文件
@@ -132,12 +106,12 @@ export default class configUtil {
     }
   }
   public static testConfig(configPath: string): boolean {
-    let fileName = '_config';
+    let fileName = configUtil.defaultConfig;
     if (configPath) {
       fileName = configPath;
     }
     try {
-      let config: configStructure = this.read(fileName);
+      let config: configStructure = require(fileName);
       return config ? true : false;
     }
     catch (e) {
@@ -162,13 +136,13 @@ export default class configUtil {
     if (options.init) {
       this.initConfig(options);
     }
-    else if (options.test) {
-      if (options.test !== true) {
-        this.testAction(options.test);
-      }
-      else {
-        this.testAction(configUtil.defaultConfig);
-      }
-    }
+    // else if (options.test) {
+    //   if (options.test !== true) {
+    //     this.testAction(options.test);
+    //   }
+    //   else {
+    //     this.testAction(configUtil.defaultConfig);
+    //   }
+    // }
   }
 }

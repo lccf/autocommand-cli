@@ -16,11 +16,9 @@
   "author": "lcc",
   "license": "MIT",
   "dependencies": {
-    "browser-sync": "^2.18.2",
     "chokidar": "^1.4.3",
     "commander": "^2.9.0",
     "glob": "^7.0.3",
-    "hjson": "^1.8.4",
     "ignore": "^3.1.2"
   },
   "bin": {
