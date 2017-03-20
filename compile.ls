@@ -1,7 +1,7 @@
 path = require \path
 exec = require \child_process .exec
 chokidar = require \chokidar
-
+glob = require \glob
 # config {{{
 baseDir = '.'
 
@@ -100,13 +100,28 @@ compileCallback = (file) !->
     console.log 'unknown file type.'
 # }}}
 # watcher {{{
-console.log('watch model，files:\n'+compileWatchFile.join('\n'));
-watcher = chokidar.watch compileWatchFile
-.on \change, compileCallback
+doWatch = !->
+  console.log('watch model，files:\n'+compileWatchFile.join('\n'));
+  watcher = chokidar.watch compileWatchFile
+  .on \change, compileCallback
 
-# auto compile file
-if autoCompileFile
-  watcher.on \add, compileCallback
+  # auto compile file
+  if autoCompileFile
+    watcher.on \add, compileCallback
 # }}}
 
+doBuild = !->
+  files = []
+  for item in compileWatchFile
+    files = files.concat glob.sync item
+
+  files.map compileCallback
+
+# main {{{
+action = process.argv[2] || \watch;
+if action is \watch
+  doWatch!
+else if action is \build
+  doBuild!
+# }}}
 # vim: set sw=2 ts=2 sts=2 et fdm=marker:
