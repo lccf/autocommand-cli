@@ -1,17 +1,13 @@
 path = require \path
 exec = require \child_process .exec
-browserSync = require \browser-sync .create!
+chokidar = require \chokidar
 
 # config {{{
 baseDir = '.'
 
-reloadWatchFile = ''
-  # "#outputDir/*.html"
-  # "#jsOutputDir/*.js"
-  # "HZ.WapApp.UI/Content/img/*.*"
-
-compileWatchFile =
+compileWatchFile = [
   "#baseDir/_source/**/*.ts"
+]
 
 autoCompileFile = false
 #autoCompileFile = true
@@ -99,28 +95,18 @@ compileCallback = (file) !->
 
   switch ext
   case '.ts'
-    compileTask file, ext, browserSync.reload
+    compileTask file, ext
   default
     console.log 'unknown file type.'
 # }}}
-# browserSync {{{
-browserSync.init!
-# browserSync.init do
-#   server:
-#     baseDir: baseDir
-#     index: \index.html
-#   open: false
-
-if reloadWatchFile and reloadWatchFile.length
-  browserSync.watch reloadWatchFile
-  .on \change, browserSync.reload
-
-wacher = browserSync.watch compileWatchFile
+# watcher {{{
+console.log('watch model，files:\n'+compileWatchFile.join('\n'));
+watcher = chokidar.watch compileWatchFile
 .on \change, compileCallback
 
 # auto compile file
 if autoCompileFile
-  wacher.on \add, compileCallback
+  watcher.on \add, compileCallback
 # }}}
 
 # vim: set sw=2 ts=2 sts=2 et fdm=marker:
