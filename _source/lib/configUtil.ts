@@ -59,10 +59,19 @@ export default class configUtil {
     "localBin": "~/node_modules/.bin"
   },
   // 环境变量
+  // 以:打头表示追加
   "environment": {
     ":PATH": "#{localBin}"
   },
   // 定义
+  // #{file} 表示当前文件
+  // #{fileName} 表示当前文件名(不包含扩展名)
+  // #{basePath} 当前命令的工作路径
+  // #{relativePath 当前文件相对于项目根目录的路径
+  // #{defilePath 针对当前文件的定义路径
+  // #{relativeFile 相对于当前工作路径的文件名，含路径
+  // #{defineRelativePath 文件相路径相对于定义命令目录的路径
+  // #{[variableKey]} variable中定自定义的变量
   "define": {
     ".jade": {
       "file": "#{relativePath}/#{fileName}.html",
@@ -70,7 +79,15 @@ export default class configUtil {
     },
     ".sass": {
       "file": "#{relativePath}/#{fileName}.html",
-      "command": "node-sass --output-style compact #{fileName}.sass ./#{fileName}.css"
+      "command": "node-sass --output-style compact #{fileName}.sass ./#{fileName}.css",
+      "behavior": {
+        "stderr": [
+          {
+            "match": "/Rendering Complete/",
+            "message": "reject sass error"
+          }
+        ]
+      }
     },
     ".ls": {
       "file": "#{relativePath}/#{fileName}.js",
