@@ -25,7 +25,7 @@ export default class configUtil {
   private static initConfig(options): any {
     let configContent: string = `{
   // 侦听的文件
-  "file": ["**/*.jade", "*.sass", "*.ls"],
+  "file": ["**/*.{jade,sass,ls}"],
   // 过滤
   "ignore": ["_*.*", "node_modules/"],
   // 变量
@@ -52,8 +52,8 @@ export default class configUtil {
       "command": "pug -Po . #{file}"
     },
     ".sass": {
-      "file": "#{relativePath}/#{fileName}.html",
-      "command": "node-sass --output-style compact #{fileName}.sass ./#{fileName}.css",
+      "file": "#{relativePath}/#{fileName}.css",
+      "command": "node-sass --output-style compact #{file} ./#{fileName}.css",
       "behavior": {
         "stderr": [
           {
@@ -65,7 +65,7 @@ export default class configUtil {
     },
     ".ls": {
       "file": "#{relativePath}/#{fileName}.js",
-      "command": "lsc -cbp ./#{fileName}.ls>./#{fileName}.js"
+      "command": "lsc -cbp #{file}>./#{fileName}.js"
     },
     // 嵌套目录
     "jade/": {
